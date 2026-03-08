@@ -19,11 +19,63 @@
 .sk-row:hover .sk-name{color:var(--g);}
 .sk-pct{font-family:var(--term);font-size:.9rem;color:var(--dim);}
 .sk-track{height:2px;background:rgba(0,255,65,.07);}
-.sk-fill{height:100%;transform:scaleX(0);transform-origin:left;}
-.sf-g{background:var(--g);box-shadow:0 0 5px var(--g-glow);}
-.sf-c{background:var(--c);box-shadow:0 0 5px var(--c-glow);}
-.sf-a{background:var(--a);}
-.sf-r{background:var(--r);}
+/* CYBERPUNK GLOW SCAN EFFECT */
+
+.sk-fill{
+position:relative;
+overflow:hidden;
+}
+
+.sk-fill::after{
+content:"";
+position:absolute;
+top:0;
+left:-40%;
+width:40%;
+height:100%;
+background:linear-gradient(
+90deg,
+transparent,
+rgba(0,255,65,.9),
+transparent
+);
+animation:scan 2.2s linear infinite;
+opacity:.7;
+}
+
+/* different colors per category */
+
+.sf-c::after{
+background:linear-gradient(
+90deg,
+transparent,
+rgba(0,229,255,.9),
+transparent
+);
+}
+
+.sf-a::after{
+background:linear-gradient(
+90deg,
+transparent,
+rgba(255,215,0,.9),
+transparent
+);
+}
+
+.sf-r::after{
+background:linear-gradient(
+90deg,
+transparent,
+rgba(255,0,60,.9),
+transparent
+);
+}
+
+@keyframes scan{
+0%{left:-40%;}
+100%{left:120%;}
+}
 
 .tool-grid{display:flex;flex-wrap:wrap;gap:6px;padding:28px 40px;}
 .tool-chip{font-family:var(--term);font-size:.95rem;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border:1px solid var(--border);color:var(--dim);transition:all .12s;cursor:none;}
@@ -102,6 +154,28 @@
       <div class="sk-row"><div class="sk-lbl"><span class="sk-name">Python — Analytics</span><span class="sk-pct">73%</span></div><div class="sk-track"><div class="sk-fill sf-a" data-w=".73"></div></div></div>
       <div class="sk-row"><div class="sk-lbl"><span class="sk-name">Pandas / NumPy</span><span class="sk-pct">70%</span></div><div class="sk-track"><div class="sk-fill sf-a" data-w=".70"></div></div></div>
       <div class="sk-row"><div class="sk-lbl"><span class="sk-name">Python — ML Basics</span><span class="sk-pct">60%</span></div><div class="sk-track"><div class="sk-fill sf-a" data-w=".60"></div></div></div>
+       <!-- NEW SKILLS -->
+
+  <div class="sk-row">
+    <div class="sk-lbl">
+      <span class="sk-name">Excel — Data Analysis</span>
+      <span class="sk-pct">89%</span>
+    </div>
+    <div class="sk-track">
+      <div class="sk-fill sf-a" data-w=".89"></div>
+    </div>
+  </div>
+
+  <div class="sk-row">
+    <div class="sk-lbl">
+      <span class="sk-name">SQL / MySQL</span>
+      <span class="sk-pct">76%</span>
+    </div>
+    <div class="sk-track">
+      <div class="sk-fill sf-a" data-w=".76"></div>
+    </div>
+  </div>
+
     </div>
 
     <div class="sk-section reveal" id="sk4">
