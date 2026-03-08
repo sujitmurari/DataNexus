@@ -72,11 +72,47 @@ const ro = new IntersectionObserver(entries=>{
 document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
 
 /* ── CONTACT FORM ── */
+/* ── CONTACT FORM ── */
 const cf = document.getElementById('cf');
-if(cf) cf.addEventListener('submit',e=>{
-  e.preventDefault();
-  alert('Activate:\n1. Sign up free at formspree.io\n2. Get your endpoint URL\n3. Set <form action="YOUR_URL" method="POST">');
-});
+
+if(cf){
+  cf.addEventListener('submit', async function(e){
+
+    e.preventDefault();
+
+    const data = new FormData(cf);
+
+    try{
+
+      const response = await fetch(cf.action,{
+        method:'POST',
+        body:data,
+        headers:{'Accept':'application/json'}
+      });
+
+      if(response.ok){
+
+        const status=document.getElementById('form-status');
+        if(status){
+          status.textContent="✓ MESSAGE TRANSMITTED — CONNECTION SECURE";
+          status.style.color="#00ff41";
+        }
+
+        cf.reset();
+
+      }
+
+    }catch(err){
+
+      const status=document.getElementById('form-status');
+      if(status){
+        status.textContent="✖ NETWORK ERROR";
+      }
+
+    }
+
+  });
+}
 
 /* ── BARCODE ── */
 document.querySelectorAll('.barcode').forEach(el=>{
