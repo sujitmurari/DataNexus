@@ -72,7 +72,6 @@ const ro = new IntersectionObserver(entries=>{
 document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
 
 /* ── CONTACT FORM ── */
-/* ── CONTACT FORM ── */
 const cf = document.getElementById('cf');
 
 if(cf){
@@ -113,7 +112,6 @@ if(cf){
 
   });
 }
-
 /* ── BARCODE ── */
 document.querySelectorAll('.barcode').forEach(el=>{
   el.innerHTML='';
