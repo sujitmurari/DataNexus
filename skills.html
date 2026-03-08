@@ -18,7 +18,11 @@
 .sk-name{font-family:var(--term);font-size:1.05rem;letter-spacing:.07em;color:rgba(0,255,65,.75);}
 .sk-row:hover .sk-name{color:var(--g);}
 .sk-pct{font-family:var(--term);font-size:.9rem;color:var(--dim);}
-.sk-track{height:2px;background:rgba(0,255,65,.07);}
+.sk-track{
+height:6px;
+background:rgba(0,255,65,.07);
+overflow:hidden;
+}
 /* CYBERPUNK GLOW SCAN EFFECT */
 
 .sk-fill{
@@ -39,8 +43,39 @@ transparent,
 rgba(0,255,65,.9),
 transparent
 );
-animation:scan 2.2s linear infinite;
-opacity:.7;
+animation:scan 2s linear infinite;
+}
+
+.sf-c::after{
+background:linear-gradient(
+90deg,
+transparent,
+rgba(0,229,255,.9),
+transparent
+);
+}
+
+.sf-a::after{
+background:linear-gradient(
+90deg,
+transparent,
+rgba(255,215,0,.9),
+transparent
+);
+}
+
+.sf-r::after{
+background:linear-gradient(
+90deg,
+transparent,
+rgba(255,0,60,.9),
+transparent
+);
+}
+
+@keyframes scan{
+0%{left:-40%;}
+100%{left:120%;}
 }
 
 /* different colors per category */
@@ -83,6 +118,53 @@ transparent
 .tool-chip.c{border-color:rgba(0,229,255,.2);color:rgba(0,229,255,.55);}
 .tool-chip.a{border-color:rgba(255,215,0,.2);color:rgba(255,215,0,.55);}
 @media(max-width:700px){.sk-grid{grid-template-columns:1fr;padding:20px;}.tool-grid{padding:20px;}}
+/* CYBERPUNK GRID + RADAR SCAN */
+
+.sk-grid{
+position:relative;
+overflow:hidden;
+}
+
+/* grid lines */
+.sk-grid::before{
+content:"";
+position:absolute;
+inset:0;
+background:
+linear-gradient(rgba(0,255,65,.06) 1px, transparent 1px),
+linear-gradient(90deg, rgba(0,255,65,.06) 1px, transparent 1px);
+background-size:40px 40px;
+animation:gridmove 8s linear infinite;
+pointer-events:none;
+}
+
+/* radar scan */
+.sk-grid::after{
+content:"";
+position:absolute;
+top:-50%;
+left:-50%;
+width:200%;
+height:200%;
+background:conic-gradient(
+rgba(0,255,65,0) 0deg,
+rgba(0,255,65,.35) 40deg,
+rgba(0,255,65,0) 80deg
+);
+animation:radarscan 5s linear infinite;
+pointer-events:none;
+mix-blend-mode:screen;
+}
+
+@keyframes gridmove{
+0%{transform:translate(0,0)}
+100%{transform:translate(40px,40px)}
+}
+
+@keyframes radarscan{
+0%{transform:rotate(0deg)}
+100%{transform:rotate(360deg)}
+}
 </style>
 </head>
 <body>
