@@ -663,9 +663,9 @@ textarea.ssh-in:focus{border-color:var(--g);}
       <div class="pb">
         <form id="cf" action="https://formspree.io/f/xreybnby" method="POST">
           <div class="ssh-head">Establishing secure connection...</div>
-          <div class="ssh-field"><label class="ssh-lbl">IDENTIFY (name)</label><input class="ssh-in" type="text" placeholder="your_name"></div>
-          <div class="ssh-field"><label class="ssh-lbl">RETURN ADDR (email)</label><input class="ssh-in" type="email" placeholder="you@company.com"></div>
-          <div class="ssh-field"><label class="ssh-lbl">PAYLOAD (message)</label><textarea class="ssh-in" rows="3" placeholder="internship inquiry..."></textarea></div>
+          <div class="ssh-field"><label class="ssh-lbl">IDENTIFY (name)</label><input class="ssh-in" type="text" placeholder="your_name" required></div>
+          <div class="ssh-field"><label class="ssh-lbl">RETURN ADDR (email)</label><input class="ssh-in" type="email" placeholder="you@company.com" required></div>
+          <div class="ssh-field"><label class="ssh-lbl">PAYLOAD (message)</label><textarea class="ssh-in" rows="3" placeholder="internship inquiry..." required></textarea></div>
           <button type="submit" class="ssh-btn">[TRANSMIT_MESSAGE]</button>
            <div id="form-status" style="margin-top:10px;font-family:var(--term);font-size:.9rem;"></div>
           <div class="ssh-note">
