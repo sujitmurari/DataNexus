@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SM://ANALYTICS.SYS — MURARI.SUJIT</title>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Courier+Prime:wght@400;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════
+   SM://ANALYTICS.SYS — HACKER DASHBOARD
+   PALETTE: #060608 bg · #00ff41 phosphor green
+            #00e5ff cyan · #ff003c red alert
+            #ffd700 amber
+═══════════════════════════════════════════════ */
+:root{
+  --bg:#060608; --bg2:#0a0a0f; --bg3:#0e0e16; --panel:#08080e;
+  --g:#00ff41; --g2:#00cc33; --g-dim:rgba(0,255,65,.07); --g-glow:rgba(0,255,65,.4);
+  --c:#00e5ff; --c-dim:rgba(0,229,255,.07); --c-glow:rgba(0,229,255,.4);
+  --r:#ff003c; --r-dim:rgba(255,0,60,.10);
+  --a:#ffd700; --a-dim:rgba(255,215,0,.08);
+  --txt:rgba(0,255,65,.82); --dim:rgba(0,255,65,.30); --muted:rgba(0,255,65,.12);
+  --border:rgba(0,255,65,.14); --border2:rgba(0,255,65,.38);
+  --mono:'Courier Prime',monospace; --term:'VT323',monospace; --orb:'Orbitron',sans-serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--mono);background:var(--bg);color:var(--g);overflow-x:hidden;cursor:none;min-height:100vh;}
+
+/* CRT scanlines overlay */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:1000;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.07) 2px,rgba(0,0,0,.07) 4px);
+}
+/* CRT vignette */
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:999;
+  background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.65) 100%);
+}
+
+/* ── CURSOR: blinking block ── */
+#cur{
+  position:fixed;z-index:9999;width:10px;height:16px;
+  background:var(--g);top:0;left:0;transform:translate(-50%,-50%);
+  pointer-events:none;box-shadow:0 0 8px var(--g),0 0 20px var(--g-glow);
+  animation:curblink .9s step-end infinite;will-change:top,left;
+}
+#cur.lnk{background:var(--c);box-shadow:0 0 8px var(--c),0 0 20px var(--c-glow);
+  width:14px;height:14px;clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);animation:none;}
+@keyframes curblink{0%,49%{opacity:1}50%,100%{opacity:0}}
+
+/* ── MATRIX CANVAS ── */
+#mx{position:fixed;top:0;left:0;z-index:0;opacity:.04;pointer-events:none;}
+
+/* ── BOOT SCREEN ── */
+#boot{
+  position:fixed;inset:0;z-index:8000;background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+  font-family:var(--term);font-size:1.1rem;color:var(--g);padding:40px;
+}
+#boot.off{display:none;}
+.bl{opacity:0;}
+.bl.show{opacity:1;}
+.boot-bar{width:520px;max-width:90vw;height:16px;border:1px solid var(--border2);margin-top:18px;overflow:hidden;}
+.boot-fill{height:100%;background:var(--g);box-shadow:0 0 10px var(--g-glow);width:0;transition:width .04s linear;}
+
+/* ── TITLE BAR (fake OS chrome) ── */
+.title-bar{
+  position:fixed;top:0;left:0;right:0;z-index:600;
+  height:22px;background:var(--bg3);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;font-family:var(--term);font-size:.9rem;letter-spacing:.06em;
+  padding:0 12px;gap:14px;
+}
+.tb-dots{display:flex;gap:5px;}
+.tb-dot{width:8px;height:8px;border-radius:50%;}
+.d-r{background:var(--r);box-shadow:0 0 5px var(--r);}
+.d-a{background:var(--a);box-shadow:0 0 5px var(--a);}
+.d-g{background:var(--g);box-shadow:0 0 5px var(--g);}
+.tb-path{color:var(--dim);flex:1;font-size:.78rem;}
+.tb-path em{color:var(--g);font-style:normal;}
+.tb-meta{display:flex;gap:16px;font-size:.72rem;color:var(--dim);}
+.tb-alert{color:var(--r);animation:blink 1.4s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
+
+/* ── MENU BAR ── */
+.menu-bar{
+  position:fixed;top:22px;left:0;right:0;z-index:599;
+  height:30px;background:rgba(8,8,14,.97);border-bottom:1px solid var(--border);
+  display:flex;align-items:stretch;backdrop-filter:blur(8px);
+}
+.mb-logo{
+  display:flex;align-items:center;padding:0 16px;border-right:1px solid var(--border);
+  font-family:var(--orb);font-size:.66rem;font-weight:900;color:var(--g);letter-spacing:.12em;
+  text-decoration:none;cursor:none;text-shadow:0 0 12px var(--g-glow);
+}
+.mb-logo span{color:var(--c);}
+.mb-nav{display:flex;list-style:none;}
+.mb-nav li a{
+  display:flex;align-items:center;height:100%;padding:0 14px;
+  font-family:var(--term);font-size:.95rem;letter-spacing:.06em;
+  color:var(--dim);text-decoration:none;text-transform:uppercase;
+  border-right:1px solid var(--border);transition:color .1s,background .1s;cursor:none;
+}
+.mb-nav li a::before{content:'>_ ';color:var(--muted);font-size:.72rem;}
+.mb-nav li a:hover,.mb-nav li a.act{color:var(--g);background:var(--g-dim);}
+.mb-right{margin-left:auto;display:flex;align-items:center;}
+.mb-clock{padding:0 14px;border-left:1px solid var(--border);font-family:var(--term);font-size:.95rem;color:var(--c);letter-spacing:.1em;}
+.mb-online{padding:0 14px;border-left:1px solid var(--border);font-family:var(--term);font-size:.85rem;color:var(--g);display:flex;align-items:center;gap:7px;}
+.pulse{width:6px;height:6px;border-radius:50%;background:var(--g);box-shadow:0 0 8px var(--g);animation:pulse 1.6s ease-in-out infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 8px var(--g)}50%{box-shadow:none;opacity:.25}}
+
+/* ── DASHBOARD GRID ── */
+.dash{
+  padding-top:52px;padding-bottom:22px;
+  display:grid;
+  grid-template-columns:240px 1fr 240px;
+  grid-template-rows:auto auto auto;
+  min-height:calc(100vh - 52px);
+  gap:1px;background:var(--border);
+  position:relative;z-index:2;
+}
+
+/* ── PANELS ── */
+.panel{background:var(--panel);position:relative;overflow:hidden;}
+.panel::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse at top left,rgba(0,255,65,.025) 0%,transparent 65%);
+}
+.ph{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:5px 11px;border-bottom:1px solid var(--border);
+  background:rgba(0,255,65,.02);
+}
+.pt{
+  font-family:var(--term);font-size:.95rem;letter-spacing:.1em;
+  color:var(--g);text-transform:uppercase;display:flex;align-items:center;gap:6px;
+}
+.pt::before{content:'[';color:var(--dim);}
+.pt::after{content:']';color:var(--dim);}
+.pbadge{font-family:var(--term);font-size:.72rem;padding:1px 6px;border:1px solid;letter-spacing:.08em;}
+.pbg{color:var(--g);border-color:rgba(0,255,65,.35);background:var(--g-dim);}
+.pbc{color:var(--c);border-color:rgba(0,229,255,.35);background:var(--c-dim);}
+.pbr{color:var(--r);border-color:rgba(255,0,60,.35);background:var(--r-dim);animation:blink 1.2s ease-in-out infinite;}
+.pba{color:var(--a);border-color:rgba(255,215,0,.35);background:var(--a-dim);}
+.pb{padding:12px 11px;}
+
+/* ── HERO (full-width) ── */
+.hero{
+  grid-column:1/-1;background:var(--panel);
+  position:relative;overflow:hidden;min-height:300px;
+  display:flex;align-items:center;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:url('me.jpeg') center 18% / cover no-repeat;
+  filter:grayscale(100%) contrast(1.3) brightness(.28);
+  transform:scale(1.04);animation:bgdrift 12s ease-in-out infinite alternate;
+}
+@keyframes bgdrift{0%{transform:scale(1.04) translateX(0)}100%{transform:scale(1.08) translateX(-14px)}}
+.hero-tint{position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,255,65,.05) 0%,transparent 50%,rgba(0,229,255,.03) 100%);}
+.hero-vign{position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,6,8,.92) 0%,rgba(6,6,8,.25) 35%,rgba(6,6,8,.25) 65%,rgba(6,6,8,.92) 100%);}
+.hero-scan{
+  position:absolute;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--g),transparent);
+  animation:hscan 4.5s linear infinite;pointer-events:none;z-index:3;
+  box-shadow:0 0 10px var(--g-glow);
+}
+@keyframes hscan{0%{top:0;opacity:.9}100%{top:100%;opacity:0}}
+
+/* hero grid lines */
+.hero-grid{
+  position:absolute;inset:0;pointer-events:none;z-index:1;
+  display:grid;grid-template-columns:repeat(12,1fr);
+}
+.hgc{border-right:1px solid rgba(0,255,65,.04);}
+
+.hero-content{position:relative;z-index:4;padding:38px 44px;display:flex;flex-direction:column;gap:10px;}
+.h-prompt{font-family:var(--term);font-size:1rem;color:var(--c);letter-spacing:.1em;}
+.h-prompt::before{content:'root@analytics:~$ ';color:rgba(0,229,255,.4);}
+.h-name{
+  font-family:var(--orb);font-weight:900;
+  font-size:clamp(2.6rem,6vw,5.8rem);line-height:.9;letter-spacing:-.01em;color:var(--g);
+  text-shadow:0 0 30px var(--g-glow),0 0 60px rgba(0,255,65,.12);
+}
+.h-name .nc{color:var(--c);text-shadow:0 0 30px var(--c-glow);}
+.h-sub{font-family:var(--term);font-size:1.15rem;color:var(--dim);letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.h-sub em{color:var(--c);font-style:normal;}
+.h-tag{font-family:var(--mono);font-size:.72rem;line-height:1.85;color:rgba(0,255,65,.42);max-width:520px;letter-spacing:.04em;}
+.h-tag strong{color:var(--g);}
+.h-btns{display:flex;gap:1px;flex-wrap:wrap;margin-top:4px;}
+.hbtn{
+  font-family:var(--term);font-size:.98rem;letter-spacing:.1em;text-transform:uppercase;
+  text-decoration:none;padding:7px 20px;border:1px solid;
+  transition:all .12s;cursor:none;display:inline-flex;align-items:center;gap:7px;
+}
+.hbg{color:var(--g);border-color:rgba(0,255,65,.38);background:var(--g-dim);}
+.hbg:hover{background:var(--g);color:var(--bg);box-shadow:0 0 18px var(--g-glow);}
+.hbc{color:var(--c);border-color:rgba(0,229,255,.38);background:var(--c-dim);}
+.hbc:hover{background:var(--c);color:var(--bg);box-shadow:0 0 18px var(--c-glow);}
+.hbr{color:var(--r);border-color:rgba(255,0,60,.38);background:var(--r-dim);}
+.hbr:hover{background:var(--r);color:#fff;box-shadow:0 0 18px var(--r);}
+
+/* hero sys stats right */
+.hero-stats{
+  position:relative;z-index:4;margin-left:auto;
+  padding:28px 32px;display:flex;flex-direction:column;gap:1px;min-width:260px;
+}
+.hsr{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:7px 11px;border:1px solid var(--border);background:rgba(0,255,65,.02);
+  font-family:var(--term);font-size:.9rem;letter-spacing:.06em;transition:background .12s;
+}
+.hsr:hover{background:var(--g-dim);}
+.hsk{color:var(--dim);}
+.hsv{color:var(--g);text-shadow:0 0 6px var(--g-glow);}
+.hsv.c{color:var(--c);text-shadow:0 0 6px var(--c-glow);}
+.hsv.a{color:var(--a);}
+.hsv.r{color:var(--r);animation:blink 1.4s ease-in-out infinite;}
+
+/* ── LEFT SIDEBAR ── */
+.sidebar-l{grid-column:1;grid-row:2;display:flex;flex-direction:column;gap:1px;background:var(--border);}
+
+/* process list */
+.proc-list{display:flex;flex-direction:column;}
+.proc-row{
+  display:flex;align-items:center;gap:7px;padding:6px 11px;
+  border-bottom:1px solid var(--border);font-family:var(--term);font-size:.88rem;
+  letter-spacing:.05em;cursor:none;transition:background .1s;
+}
+.proc-row:hover{background:var(--g-dim);}
+.pid{color:var(--dim);min-width:28px;font-size:.72rem;}
+.pname{color:var(--g);flex:1;}
+.pname.c{color:var(--c);}
+.pname.a{color:var(--a);}
+.pcpu{font-size:.72rem;color:var(--dim);min-width:32px;text-align:right;}
+.pstatus{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.ps-run{background:var(--g);box-shadow:0 0 5px var(--g);}
+.ps-slp{background:var(--a);}
+.ps-new{background:var(--c);box-shadow:0 0 5px var(--c);animation:pulse 1.2s ease-in-out infinite;}
+
+/* skill bars */
+.sk-list{display:flex;flex-direction:column;gap:7px;}
+.sk-row{display:flex;flex-direction:column;gap:2px;}
+.sk-lbl{display:flex;justify-content:space-between;font-family:var(--term);font-size:.85rem;letter-spacing:.04em;}
+.sk-n{color:rgba(0,255,65,.62);}
+.sk-p{color:var(--dim);}
+.sk-track{height:3px;background:rgba(0,255,65,.07);}
+.sk-fill{height:100%;transform:scaleX(0);transform-origin:left;transition:transform 1.1s cubic-bezier(.4,0,.2,1);}
+.sf-g{background:var(--g);box-shadow:0 0 5px var(--g-glow);}
+.sf-c{background:var(--c);box-shadow:0 0 5px var(--c-glow);}
+.sf-a{background:var(--a);}
+.sf-r{background:var(--r);}
+
+/* ── CENTER MAIN ── */
+.main-c{grid-column:2;grid-row:2;display:flex;flex-direction:column;gap:1px;background:var(--border);}
+
+/* file tabs */
+.ftabs{display:flex;background:var(--bg2);border-bottom:1px solid var(--border);overflow-x:auto;}
+.ftab{
+  padding:5px 13px;border-right:1px solid var(--border);
+  font-family:var(--term);font-size:.85rem;letter-spacing:.06em;color:var(--dim);
+  white-space:nowrap;cursor:none;transition:all .12s;display:flex;align-items:center;gap:6px;
+}
+.ftab:hover{color:var(--g);background:var(--g-dim);}
+.ftab.act{color:var(--g);background:var(--panel);border-bottom:1px solid var(--panel);}
+.fext{font-size:.7rem;color:var(--muted);}
+
+/* project cards */
+.proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);}
+.pcard{
+  background:var(--panel);padding:16px 15px;position:relative;overflow:hidden;
+  cursor:none;transition:background .15s;
+}
+.pcard::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:var(--g);transform:scaleX(0);transform-origin:left;transition:transform .4s;
+}
+.pcard:hover{background:rgba(0,255,65,.022);}
+.pcard:hover::before{transform:scaleX(1);}
+.pc-hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:9px;}
+.pc-n{font-family:var(--term);font-size:.78rem;color:var(--dim);letter-spacing:.1em;}
+.pc-title{
+  font-family:var(--orb);font-size:.78rem;font-weight:700;color:var(--g);
+  letter-spacing:.04em;margin-bottom:3px;line-height:1.2;text-transform:uppercase;
+  text-shadow:0 0 8px var(--g-glow);transition:color .15s;
+}
+.pcard:hover .pc-title{color:var(--c);text-shadow:0 0 8px var(--c-glow);}
+.pc-dom{font-family:var(--term);font-size:.78rem;color:var(--dim);margin-bottom:9px;letter-spacing:.07em;}
+.pc-desc{font-family:var(--mono);font-size:.65rem;line-height:1.75;color:rgba(0,255,65,.35);margin-bottom:10px;}
+.pc-tags{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:10px;}
+.pctag{font-family:var(--term);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;padding:1px 5px;border:1px solid rgba(0,255,65,.14);color:var(--dim);}
+.pcard:hover .pctag{border-color:rgba(0,255,65,.28);color:rgba(0,255,65,.55);}
+.pc-ft{display:flex;justify-content:space-between;align-items:center;padding-top:9px;border-top:1px solid var(--border);}
+.pc-link{font-family:var(--term);font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;color:var(--g);text-decoration:none;display:flex;align-items:center;gap:4px;transition:color .12s;}
+.pc-link::after{content:'↗';transition:transform .12s;}
+.pc-link:hover{color:var(--c);text-shadow:0 0 6px var(--c-glow);}
+.pc-link:hover::after{transform:translate(2px,-2px);}
+
+/* ── RIGHT SIDEBAR ── */
+.sidebar-r{grid-column:3;grid-row:2;display:flex;flex-direction:column;gap:1px;background:var(--border);}
+
+/* terminal log */
+.term-log{
+  font-family:var(--term);font-size:.84rem;letter-spacing:.04em;
+  height:220px;overflow-y:auto;
+}
+.term-log::-webkit-scrollbar{width:3px;}
+.term-log::-webkit-scrollbar-thumb{background:rgba(0,255,65,.2);}
+.tl{display:flex;gap:5px;padding:2px 0;}
+.tp{color:var(--c);flex-shrink:0;}
+.tc{color:var(--g);}
+.to{color:var(--dim);padding-left:12px;}
+.to.ok{color:var(--g);}
+.to.inf{color:var(--c);}
+.to.wn{color:var(--a);}
+.to.er{color:var(--r);}
+.tcur{display:inline-block;width:8px;height:15px;background:var(--g);animation:curblink .9s step-end infinite;vertical-align:middle;margin-left:2px;}
+
+/* connect cards */
+.conn-list{display:flex;flex-direction:column;gap:1px;}
+.conn-a{
+  display:flex;align-items:center;gap:9px;padding:10px 11px;
+  border:1px solid var(--border);background:rgba(0,255,65,.015);
+  text-decoration:none;color:inherit;cursor:none;transition:all .14s;
+}
+.conn-a:hover{background:var(--g-dim);border-color:var(--border2);}
+.conn-a:hover .cn{color:var(--c);text-shadow:0 0 6px var(--c-glow);}
+.conn-a:hover .carr{transform:translate(3px,-3px);color:var(--c);}
+.ci{width:26px;height:26px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--term);font-size:.72rem;color:var(--dim);}
+.cn{font-family:var(--term);font-size:.88rem;color:var(--g);letter-spacing:.06em;}
+.cu{font-family:var(--mono);font-size:.56rem;color:var(--dim);margin-top:1px;}
+.carr{color:var(--dim);font-size:.78rem;transition:all .14s;}
+
+/* ── BOTTOM ROW ── */
+.bottom-row{grid-column:1/-1;grid-row:3;display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);}
+
+/* about terminal */
+.aterm{font-family:var(--term);font-size:.86rem;line-height:1.8;letter-spacing:.04em;}
+.ath{color:var(--c);margin-bottom:3px;}
+.atb{color:var(--dim);}
+.atb strong{color:var(--g);font-weight:400;}
+.attags{display:flex;flex-wrap:wrap;gap:3px;margin-top:5px;}
+.attag{font-family:var(--term);font-size:.76rem;padding:1px 6px;border:1px solid var(--border2);color:var(--g);background:var(--g-dim);}
+.attag.c{border-color:rgba(0,229,255,.3);color:var(--c);background:var(--c-dim);}
+.attag.a{border-color:rgba(255,215,0,.3);color:var(--a);background:var(--a-dim);}
+
+/* directory listing */
+.dir-list{font-family:var(--term);font-size:.86rem;letter-spacing:.04em;}
+.dl{display:flex;gap:8px;padding:3px 0;}
+.dl-perm{color:rgba(0,229,255,.4);font-size:.76rem;}
+.dl-name{color:var(--g);}
+.dl-foot{margin-top:10px;padding-top:8px;border-top:1px solid var(--border);}
+
+/* ssh contact form */
+.ssh-head{font-family:var(--term);font-size:.88rem;color:var(--c);margin-bottom:10px;letter-spacing:.06em;}
+.ssh-field{display:flex;flex-direction:column;gap:2px;margin-bottom:7px;}
+.ssh-lbl{font-family:var(--term);font-size:.8rem;color:var(--dim);letter-spacing:.08em;}
+.ssh-lbl::before{content:'> ';color:var(--muted);}
+.ssh-in{
+  font-family:var(--term);font-size:.88rem;color:var(--g);
+  background:rgba(0,255,65,.025);border:none;border-bottom:1px solid var(--border);
+  padding:5px 8px;outline:none;width:100%;letter-spacing:.05em;transition:border-color .12s;
+}
+.ssh-in:focus{border-color:var(--g);background:var(--g-dim);}
+.ssh-in::placeholder{color:var(--muted);}
+textarea.ssh-in{resize:none;border:1px solid var(--border);}
+textarea.ssh-in:focus{border-color:var(--g);}
+.ssh-btn{
+  width:100%;font-family:var(--term);font-size:.98rem;letter-spacing:.12em;
+  text-transform:uppercase;padding:7px;margin-top:6px;
+  background:var(--g-dim);color:var(--g);border:1px solid rgba(0,255,65,.38);
+  cursor:none;transition:all .12s;
+}
+.ssh-btn:hover{background:var(--g);color:var(--bg);box-shadow:0 0 16px var(--g-glow);}
+.ssh-note{font-family:var(--term);font-size:.78rem;color:var(--dim);margin-top:7px;}
+.ssh-note a{color:var(--c);text-decoration:none;}
+.ssh-note a:hover{text-shadow:0 0 6px var(--c-glow);}
+
+/* ── STATUS BAR ── */
+.status-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:500;
+  height:20px;background:var(--bg3);border-top:1px solid var(--border);
+  display:flex;align-items:center;font-family:var(--term);font-size:.8rem;letter-spacing:.08em;
+}
+.sc{padding:0 11px;border-right:1px solid var(--border);color:var(--dim);display:flex;align-items:center;gap:5px;height:100%;}
+.sc.act{color:var(--g);background:var(--g-dim);}
+.sc.cy{color:var(--c);}
+.sc.al{color:var(--r);animation:blink 1.4s ease-in-out infinite;}
+.sc.ml{margin-left:auto;}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(10px);transition:opacity .55s ease,transform .55s ease;}
+.reveal.in{opacity:1;transform:none;}
+
+/* scrollbar */
+::-webkit-scrollbar{width:3px;height:3px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:rgba(0,255,65,.2);}
+::-webkit-scrollbar-thumb:hover{background:var(--g);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .dash{grid-template-columns:1fr;}
+  .hero-stats{display:none;}
+  .sidebar-l,.sidebar-r,.main-c,.bottom-row{grid-column:1;grid-row:auto;}
+  .bottom-row{grid-template-columns:1fr;}
+  .proj-grid{grid-template-columns:1fr;}
+  .tb-meta span:not(.tb-alert){display:none;}
+}
+</style>
+</head>
+<body>
+
+<canvas id="mx"></canvas>
+
+<!-- ── BOOT SCREEN ── -->
+<div id="boot">
+  <div class="bl show" style="color:var(--c);font-size:1.5rem;letter-spacing:.25em;margin-bottom:8px;">SM://ANALYTICS.SYS v2.4.1</div>
+  <div class="bl" id="b1" style="color:var(--dim);">BIOS POST check... OK</div>
+  <div class="bl" id="b2" style="color:var(--dim);">Loading kernel modules: analytics.ko tableau.ko python.ko</div>
+  <div class="bl" id="b3" style="color:var(--dim);">Mounting dashboard filesystem at /dev/sm0...</div>
+  <div class="bl" id="b4" style="color:var(--dim);">Establishing network connections [TABLEAU.PUBLIC] [LINKEDIN.NET]</div>
+  <div class="bl" id="b5" style="color:var(--g);">All systems nominal. Welcome, MURARI.SUJIT</div>
+  <div class="bl" id="b6" style="color:rgba(0,255,65,.4);font-size:.9rem;">STATUS: OPEN TO INTERNSHIPS — UTTARAKHAND, INDIA</div>
+  <div class="boot-bar"><div class="boot-fill" id="bfill"></div></div>
+</div>
+
+<div id="cur"></div>
+
+<!-- ── OS CHROME ── -->
+<div class="title-bar">
+  <div class="tb-dots"><div class="tb-dot d-r"></div><div class="tb-dot d-a"></div><div class="tb-dot d-g"></div></div>
+  <div class="tb-path">sm@analytics-sys:~$ <em>./portfolio/dashboard.exe</em></div>
+  <div class="tb-meta">
+    <span>MEM: 84%</span>
+    <span>CPU: 23%</span>
+    <span>NET: ↑↓</span>
+    <span class="tb-alert">● INTERNSHIP MODE: ON</span>
+  </div>
+</div>
+
+<nav class="menu-bar">
+  <a class="mb-logo" href="index.html">SM<span>://</span>SYS</a>
+  <ul class="mb-nav">
+    <li><a href="skills.html">SKILLS</a></li>
+    <li><a href="projects.html">PROJECTS</a></li>
+    <li><a href="about.html">ABOUT</a></li>
+    <li><a href="connect.html">CONNECT</a></li>
+    <li><a href="contact.html">CONTACT</a></li>
+  </ul>
+  <div class="mb-right">
+    <div class="mb-clock" id="mbclk">00:00:00</div>
+    <div class="mb-online"><span class="pulse"></span>ONLINE</div>
+  </div>
+</nav>
+
+<!-- ═══ DASHBOARD ═══ -->
+<div class="dash">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-tint"></div>
+    <div class="hero-vign"></div>
+    <div class="hero-scan"></div>
+    <div class="hero-grid">
+      <div class="hgc"></div><div class="hgc"></div><div class="hgc"></div><div class="hgc"></div>
+      <div class="hgc"></div><div class="hgc"></div><div class="hgc"></div><div class="hgc"></div>
+      <div class="hgc"></div><div class="hgc"></div><div class="hgc"></div><div class="hgc"></div>
+    </div>
+
+    <div class="hero-content">
+      <div class="h-prompt">whoami</div>
+      <div class="h-name">SUJIT<br><span class="nc">MURARI</span></div>
+      <div class="h-sub">BBA <em>//</em> BUSINESS ANALYTICS <em>//</em> SEM IV · DBUU</div>
+      <p class="h-tag">Decoding complex data systems — transforming them into<br><strong>strategic business intelligence.</strong> Regression · Correlation · KPI · Tableau · Python · SQL</p>
+      <div class="h-btns">
+        <a class="hbtn hbg" href="projects.html">./projects.sh</a>
+        <a class="hbtn hbc" href="about.html">cat about.txt</a>
+        <a class="hbtn hbr" href="contact.html">ssh hire@murari</a>
+      </div>
+    </div>
+
+    <div class="hero-stats">
+      <div class="hsr"><span class="hsk">PROJECTS</span><span class="hsv">04 /LIVE</span></div>
+      <div class="hsr"><span class="hsk">SKILLS</span><span class="hsv">12+</span></div>
+      <div class="hsr"><span class="hsk">TABLEAU</span><span class="hsv c">92%</span></div>
+      <div class="hsr"><span class="hsk">EXCEL</span><span class="hsv">89%</span></div>
+      <div class="hsr"><span class="hsk">PYTHON</span><span class="hsv c">73%</span></div>
+      <div class="hsr"><span class="hsk">SQL</span><span class="hsv">76%</span></div>
+      <div class="hsr"><span class="hsk">LOCATION</span><span class="hsv a">INDIA</span></div>
+      <div class="hsr"><span class="hsk">STATUS</span><span class="hsv r">● HIRING</span></div>
+    </div>
+  </div>
+
+  <!-- LEFT SIDEBAR -->
+  <div class="sidebar-l">
+
+    <div class="panel">
+      <div class="ph"><div class="pt">PROCESSES</div><div class="pbadge pbg">8 RUNNING</div></div>
+      <div class="proc-list">
+        <div class="proc-row"><span class="pid">001</span><span class="pname">tableau.public</span><span class="pcpu">92%</span><span class="pstatus ps-run"></span></div>
+        <div class="proc-row"><span class="pid">002</span><span class="pname c">python.analytics</span><span class="pcpu">73%</span><span class="pstatus ps-run"></span></div>
+        <div class="proc-row"><span class="pid">003</span><span class="pname">excel.modeling</span><span class="pcpu">89%</span><span class="pstatus ps-run"></span></div>
+        <div class="proc-row"><span class="pid">004</span><span class="pname c">mysql.workbench</span><span class="pcpu">76%</span><span class="pstatus ps-new"></span></div>
+        <div class="proc-row"><span class="pid">005</span><span class="pname">kpi.dashboard</span><span class="pcpu">85%</span><span class="pstatus ps-run"></span></div>
+        <div class="proc-row"><span class="pid">006</span><span class="pname a">regression.model</span><span class="pcpu">78%</span><span class="pstatus ps-slp"></span></div>
+        <div class="proc-row"><span class="pid">007</span><span class="pname">data.cleaning</span><span class="pcpu">86%</span><span class="pstatus ps-run"></span></div>
+        <div class="proc-row"><span class="pid">008</span><span class="pname c">ml.basics</span><span class="pcpu">60%</span><span class="pstatus ps-new"></span></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="ph"><div class="pt">SKILL LOAD</div><div class="pbadge pbc">METRICS</div></div>
+      <div class="pb">
+        <div class="sk-list" id="skbars">
+          <div class="sk-row"><div class="sk-lbl"><span class="sk-n">Tableau</span><span class="sk-p">92%</span></div><div class="sk-track"><div class="sk-fill sf-g" data-w=".92"></div></div></div>
+          <div class="sk-row"><div class="sk-lbl"><span class="sk-n">Excel</span><span class="sk-p">89%</span></div><div class="sk-track"><div class="sk-fill sf-g" data-w=".89"></div></div></div>
+          <div class="sk-row"><div class="sk-lbl"><span class="sk-n">Data Cleaning</span><span class="sk-p">86%</span></div><div class="sk-track"><div class="sk-fill sf-g" data-w=".86"></div></div></div>
+          <div class="sk-row"><div class="sk-lbl"><span class="sk-n">KPI Design</span><span class="sk-p">85%</span></div><div class="sk-track"><div class="sk-fill sf-g" data-w=".85"></div></div></div>
+          <div class="sk-row"><div class="sk-lbl"><span class="sk-n">Correlation</span><span class="sk-p">80%</span></div><div class="sk-track"><div class="sk-fill sf-c" data-w=".80"></div></div></div>
+          <div class="sk-row"><div class="sk-lbl"><span class="sk-n">Regression</span><span class="sk-p">78%</span></div><div class="sk-track"><div class="sk-fill sf-c" data-w=".78"></div></div></div>
+          <div class="sk-row"><div class="sk-lbl"><span class="sk-n">SQL</span><span class="sk-p">76%</span></div><div class="sk-track"><div class="sk-fill sf-c" data-w=".76"></div></div></div>
+          <div class="sk-row"><div class="sk-lbl"><span class="sk-n">Python</span><span class="sk-p">73%</span></div><div class="sk-track"><div class="sk-fill sf-a" data-w=".73"></div></div></div>
+          <div class="sk-row"><div class="sk-lbl"><span class="sk-n">Pandas/NumPy</span><span class="sk-p">70%</span></div><div class="sk-track"><div class="sk-fill sf-a" data-w=".70"></div></div></div>
+          <div class="sk-row"><div class="sk-lbl"><span class="sk-n">ML Basics</span><span class="sk-p">60%</span></div><div class="sk-track"><div class="sk-fill sf-r" data-w=".60"></div></div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CENTER MAIN -->
+  <div class="main-c">
+    <div class="panel" style="flex:1;">
+      <div class="ph"><div class="pt">PROJECT FILES</div><div class="pbadge pbc">4 OPEN</div></div>
+      <div class="ftabs">
+        <div class="ftab act">flights<span class="fext">.twbx</span></div>
+        <div class="ftab">ecommerce<span class="fext">.twbx</span></div>
+        <div class="ftab">gym<span class="fext">.twbx</span></div>
+        <div class="ftab">decathlon<span class="fext">.twbx</span></div>
+      </div>
+      <div class="proj-grid">
+
+        <div class="pcard reveal">
+          <div class="pc-hd"><div class="pc-n">// FILE_01</div><div class="pbadge pbg">LIVE</div></div>
+          <div class="pc-title">Flights Analytics Dashboard</div>
+          <div class="pc-dom">AIRLINE · PRICING · REVENUE</div>
+          <p class="pc-desc">Indian domestic airline pricing, route performance and revenue analytics. KPI cards, dual-axis charts, route heatmaps and time-series trend lines.</p>
+          <div class="pc-tags"><span class="pctag">TABLEAU</span><span class="pctag">HEATMAP</span><span class="pctag">KPI</span><span class="pctag">DUAL-AXIS</span></div>
+          <div class="pc-ft"><a class="pc-link" href="https://public.tableau.com/app/profile/sujit.murari/viz/FlightsDashboard_17704030931600/FlightsDashboard" target="_blank">OPEN FILE</a></div>
+        </div>
+
+        <div class="pcard reveal">
+          <div class="pc-hd"><div class="pc-n">// FILE_02</div><div class="pbadge pbg">LIVE</div></div>
+          <div class="pc-title">Indian E-Commerce Pricing</div>
+          <div class="pc-dom">E-COMMERCE · PRICING · REVENUE</div>
+          <p class="pc-desc">Discount impact, customer ratings and revenue analytics. Scatter plots and boxplots expose pricing anomalies with full correlation analysis.</p>
+          <div class="pc-tags"><span class="pctag">CORRELATION</span><span class="pctag">SCATTER</span><span class="pctag">BOXPLOT</span></div>
+          <div class="pc-ft"><a class="pc-link" href="https://public.tableau.com/app/profile/sujit.murari/viz/IndianE-CommercePricingRevenuePerformanceDashboard/Dashboard1" target="_blank">OPEN FILE</a></div>
+        </div>
+
+        <div class="pcard reveal">
+          <div class="pc-hd"><div class="pc-n">// FILE_03</div><div class="pbadge pba">DONE</div></div>
+          <div class="pc-title">Gym Performance Analytics</div>
+          <div class="pc-dom">HEALTH · FITNESS · BMI</div>
+          <p class="pc-desc">Calories burned, session duration, heart rate zones and BMI progression. Histograms and regression scatter plots reveal workout efficiency trends.</p>
+          <div class="pc-tags"><span class="pctag">REGRESSION</span><span class="pctag">HISTOGRAM</span><span class="pctag">BMI</span></div>
+          <div class="pc-ft"><a class="pc-link" href="https://public.tableau.com/app/profile/sujit.murari/viz/GymPerformanceWorkoutEfficiencyAnalyticsDashboard/GymPerformanceWorkoutEfficiencyAnalyticsDashboard" target="_blank">OPEN FILE</a></div>
+        </div>
+
+        <div class="pcard reveal">
+          <div class="pc-hd"><div class="pc-n">// FILE_04</div><div class="pbadge pba">DONE</div></div>
+          <div class="pc-title">Decathlon India Analytics</div>
+          <div class="pc-dom">RETAIL · SALES · CATEGORY</div>
+          <p class="pc-desc">Retail category and product performance for Decathlon India — sales distribution, pricing behaviour and customer preference patterns.</p>
+          <div class="pc-tags"><span class="pctag">RETAIL</span><span class="pctag">SALES</span><span class="pctag">CATEGORY</span></div>
+          <div class="pc-ft"><a class="pc-link" href="https://public.tableau.com/app/profile/sujit.murari/viz/DecathlonIndia_17704793519210/DecthlonIndia" target="_blank">OPEN FILE</a></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT SIDEBAR -->
+  <div class="sidebar-r">
+
+    <div class="panel">
+      <div class="ph"><div class="pt">SYS LOG</div><div class="pbadge pbc">LIVE</div></div>
+      <div class="pb">
+        <div class="term-log" id="tlog">
+          <div class="tl"><span class="tp">$</span><span class="tc" style="margin-left:5px;">load portfolio.sys</span></div>
+          <div class="to ok">✓ Dashboard loaded</div>
+          <div class="tl"><span class="tp">$</span><span class="tc" style="margin-left:5px;">ping tableau.public</span></div>
+          <div class="to inf">4 dashboards active</div>
+          <div class="tl"><span class="tp">$</span><span class="tc" style="margin-left:5px;">whoami</span></div>
+          <div class="to ok">SUJIT.MURARI // BBA SEM IV</div>
+          <div class="tl"><span class="tp">$</span><span class="tc" style="margin-left:5px;">status --jobs</span></div>
+          <div class="to wn">⚡ OPEN TO INTERNSHIPS</div>
+          <div class="tl"><span class="tp">$</span><span class="tc" style="margin-left:5px;">_<span class="tcur"></span></span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="ph"><div class="pt">CONNECTIONS</div><div class="pbadge pbg">2 ACTIVE</div></div>
+      <div class="pb">
+        <div class="conn-list">
+          <a class="conn-a" href="https://public.tableau.com/app/profile/sujit.murari/vizzes" target="_blank">
+            <div class="ci" style="color:#1f77b4;border-color:rgba(31,119,180,.3);">TB</div>
+            <div style="flex:1;"><div class="cn">TABLEAU.PUBLIC</div><div class="cu">profile/sujit.murari/vizzes</div></div>
+            <div class="carr">↗</div>
+          </a>
+          <a class="conn-a" href="https://www.linkedin.com/in/sujitmurari06/" target="_blank">
+            <div class="ci" style="color:#0077b5;border-color:rgba(0,119,181,.3);">Li</div>
+            <div style="flex:1;"><div class="cn">LINKEDIN.NET</div><div class="cu">in/sujitmurari06</div></div>
+            <div class="carr">↗</div>
+          </a>
+          <a class="conn-a" href="mailto:sujitmurari06@gmail.com">
+            <div class="ci" style="color:var(--g);border-color:rgba(0,255,65,.3);">@</div>
+            <div style="flex:1;"><div class="cn">EMAIL.DIRECT</div><div class="cu">sujitmurari06@gmail.com</div></div>
+            <div class="carr">↗</div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM ROW -->
+  <div class="bottom-row">
+
+    <div class="panel reveal">
+      <div class="ph"><div class="pt">CAT ABOUT.TXT</div><div class="pbadge pbc">READ</div></div>
+      <div class="pb">
+        <div class="aterm">
+          <div style="margin-bottom:10px;"><div class="ath">// IDENTITY</div><div class="atb">I am <strong>Sujit Murari</strong>, a Business Analytics student focused on decoding complex data systems and transforming them into <strong>strategic business intelligence</strong>. Analytics × Technology × Decision Science.</div></div>
+          <div style="margin-bottom:10px;"><div class="ath">// ANALYTICS STACK</div><div class="attags"><span class="attag">Tableau</span><span class="attag">Python</span><span class="attag c">Excel</span><span class="attag c">SQL</span><span class="attag a">Regression</span><span class="attag a">Correlation</span><span class="attag">KPI Modeling</span><span class="attag">Distribution</span></div></div>
+          <div><div class="ath">// MISSION</div><div class="atb">Transform complex datasets into clear <strong>strategic intelligence</strong>. Analytics is the interface between data and decision making.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel reveal">
+      <div class="ph"><div class="pt">LS COURSEWORK/</div><div class="pbadge pba">6 MODULES</div></div>
+      <div class="pb">
+        <div class="dir-list">
+          <div class="dl"><span class="dl-perm">drwxr</span><span class="dl-name">Finance Analytics (24BAN206I)</span></div>
+          <div class="dl"><span class="dl-perm">drwxr</span><span class="dl-name">Cost &amp; Mgmt Accounting</span></div>
+          <div class="dl"><span class="dl-perm">drwxr</span><span class="dl-name">Human Resource Management</span></div>
+          <div class="dl"><span class="dl-perm">drwxr</span><span class="dl-name">Human Resource Planning</span></div>
+          <div class="dl"><span class="dl-perm">drwxr</span><span class="dl-name">Statistics for Business</span></div>
+          <div class="dl"><span class="dl-perm">drwxr</span><span class="dl-name">Business Intelligence</span></div>
+          <div class="dl-foot">
+            <div class="to inf">6 directories, 0 files</div>
+            <div class="to" style="margin-top:2px;">DBUU · SEM IV · UTTARAKHAND</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel reveal">
+      <div class="ph"><div class="pt">SSH HIRE@MURARI</div><div class="pbadge pbr">PORT 22 OPEN</div></div>
+      <div class="pb">
+        <form id="cf">
+          <div class="ssh-head">Establishing secure connection...</div>
+          <div class="ssh-field"><label class="ssh-lbl">IDENTIFY (name)</label><input class="ssh-in" type="text" placeholder="your_name"></div>
+          <div class="ssh-field"><label class="ssh-lbl">RETURN ADDR (email)</label><input class="ssh-in" type="email" placeholder="you@company.com"></div>
+          <div class="ssh-field"><label class="ssh-lbl">PAYLOAD (message)</label><textarea class="ssh-in" rows="3" placeholder="internship inquiry..."></textarea></div>
+          <button type="submit" class="ssh-btn">[TRANSMIT_MESSAGE]</button>
+          <div class="ssh-note">
+            Direct: <a href="mailto:sujitmurari06@gmail.com">sujitmurari06@gmail.com</a> ·
+            <a href="https://www.linkedin.com/in/sujitmurari06/" target="_blank">LinkedIn ↗</a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- STATUS BAR -->
+<div class="status-bar">
+  <div class="sc act">SM://ANALYTICS.SYS</div>
+  <div class="sc">SUJIT MURARI</div>
+  <div class="sc cy">BBA · SEM IV · DBUU</div>
+  <div class="sc">4 PROJECTS LIVE</div>
+  <div class="sc">UTTARAKHAND, INDIA</div>
+  <div class="sc al">● OPEN TO INTERNSHIPS</div>
+  <div class="sc ml" id="sbtime">00:00:00</div>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+/* CURSOR */
+const cur=document.getElementById('cur');
+let mx=0,my=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+document.querySelectorAll('a,button,.pcard,.conn-a,.proc-row,.ftab').forEach(el=>{
+  el.addEventListener('mouseenter',()=>cur.classList.add('lnk'));
+  el.addEventListener('mouseleave',()=>cur.classList.remove('lnk'));
+});
+
+/* MATRIX RAIN */
+const cv=document.getElementById('mx'),ctx=cv.getContext('2d');
+function rsz(){cv.width=window.innerWidth;cv.height=window.innerHeight;}rsz();
+window.addEventListener('resize',rsz);
+const cols=Math.floor(window.innerWidth/16);
+const drops=Array(cols).fill(1);
+const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*スジット分析データSQL>_';
+function mat(){
+  ctx.fillStyle='rgba(6,6,8,0.05)';ctx.fillRect(0,0,cv.width,cv.height);
+  ctx.fillStyle='#00ff41';ctx.font='14px "Courier Prime",monospace';
+  drops.forEach((y,i)=>{
+    const ch=chars[Math.floor(Math.random()*chars.length)];
+    ctx.fillText(ch,i*16,y*16);
+    if(y*16>cv.height&&Math.random()>.975)drops[i]=0;
+    drops[i]++;
+  });
+}
+setInterval(mat,55);
+
+/* BOOT */
+const boot=document.getElementById('boot');
+const fill=document.getElementById('bfill');
+const blines=['b1','b2','b3','b4','b5','b6'];
+let bp=0,bi=0;
+const bint=setInterval(()=>{
+  bp+=1.8+Math.random()*2.5;
+  fill.style.width=Math.min(bp,100)+'%';
+  if(bi<blines.length&&bp>bi*18){document.getElementById(blines[bi]).classList.add('show');bi++;}
+  if(bp>=100){clearInterval(bint);setTimeout(()=>boot.classList.add('off'),500);}
+},40);
+
+/* CLOCKS */
+function tick(){
+  const n=new Date();
+  const t=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');
+  document.getElementById('mbclk').textContent=t;
+  document.getElementById('sbtime').textContent=t;
+}
+tick();setInterval(tick,1000);
+
+/* SKILL BARS */
+const so=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting)return;
+    e.target.querySelectorAll('.sk-fill').forEach((b,i)=>{
+      const w=parseFloat(b.dataset.w||0);
+      setTimeout(()=>{b.style.transform=`scaleX(${w})`;},i*65);
+    });
+    so.unobserve(e.target);
+  });
+},{threshold:.1});
+const skEl=document.getElementById('skbars');
+if(skEl)so.observe(skEl);
+
+/* REVEAL */
+const ro=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');ro.unobserve(e.target);}});
+},{threshold:.06});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+
+/* LIVE TERMINAL LOG */
+const logEl=document.getElementById('tlog');
+const logData=[
+  ['$','df -h ./analytics','inf','DISK: 4.2GB / 32GB FREE'],
+  ['$','netstat --live','ok','✓ TABLEAU.PUBLIC: CONNECTED'],
+  ['$','python3 analyze.py','ok','✓ REGRESSION R²: 0.847'],
+  ['$','git log --oneline','','a4f12b3 add decathlon dashboard'],
+  ['$','grep "kpi" ./flights.twbx','','line 44: KPI_CARDS [PASS]'],
+  ['$','top -n1 --sort=cpu','wn','⚡ PANDAS LOAD SPIKE'],
+  ['$','echo $SEMESTER','ok','SEM_IV_DBUU'],
+  ['$','cat mission.txt','inf','DATA → INSIGHT → DECISION'],
+  ['$','ls ./tools/','','tableau/ python/ sql/ excel/'],
+  ['$','ping linkedin.com','ok','✓ REPLY 12ms — CONNECTED'],
+];
+let li=0;
+function addLog(){
+  if(!logEl)return;
+  const d=logData[li%logData.length];li++;
+  const p=document.createElement('div');p.className='tl';
+  p.innerHTML=`<span class="tp">${d[0]}</span><span class="tc" style="margin-left:5px;">${d[1]}</span>`;
+  logEl.appendChild(p);
+  const o=document.createElement('div');o.className=`to${d[2]?' '+d[2]:''}`;o.textContent=d[3];
+  logEl.appendChild(o);
+  logEl.scrollTop=logEl.scrollHeight;
+  while(logEl.children.length>32)logEl.removeChild(logEl.firstChild);
+}
+setInterval(addLog,3200);
+
+/* CONTACT FORM */
+document.getElementById('cf').addEventListener('submit',e=>{
+  e.preventDefault();
+  alert('Activate form:\n1. Sign up at formspree.io\n2. Get your endpoint URL\n3. Set: <form action="YOUR_URL" method="POST">');
+});
+
+})();
+</script>
+</body>
+</html>
