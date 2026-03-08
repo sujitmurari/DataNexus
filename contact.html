@@ -3,98 +3,159 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contact 連絡 | Sujit Murari</title>
-<link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+<title>CONTACT — SM://ANALYTICS.SYS</title>
+<link rel="stylesheet" href="cyber.css">
+<style>
+.contact-wrap{display:grid;grid-template-columns:1fr 300px;gap:28px;padding:40px;align-items:start;}
+/* form */
+.ssh-head{font-family:var(--term);font-size:.95rem;color:var(--c);margin-bottom:18px;letter-spacing:.07em;line-height:1.6;}
+.ssh-head .bl{opacity:0;}
+.ssh-field{display:flex;flex-direction:column;gap:4px;margin-bottom:14px;}
+.ssh-lbl{font-family:var(--term);font-size:.85rem;color:var(--dim);letter-spacing:.1em;display:flex;align-items:center;gap:5px;}
+.ssh-lbl::before{content:'>';color:var(--muted);}
+.ssh-in{font-family:var(--term);font-size:.95rem;color:var(--g);background:rgba(0,255,65,.025);border:none;border-bottom:1px solid var(--border);padding:7px 10px;outline:none;width:100%;letter-spacing:.06em;transition:border-color .12s,background .12s;}
+.ssh-in:focus{border-color:var(--g);background:var(--g-dim);}
+.ssh-in::placeholder{color:var(--muted);}
+textarea.ssh-in{resize:none;border:1px solid var(--border);margin-top:2px;}
+textarea.ssh-in:focus{border-color:var(--g);}
+.ssh-btn{width:100%;font-family:var(--term);font-size:1rem;letter-spacing:.14em;text-transform:uppercase;padding:10px;margin-top:8px;background:var(--g-dim);color:var(--g);border:1px solid rgba(0,255,65,.38);cursor:none;transition:all .12s;}
+.ssh-btn:hover{background:var(--g);color:var(--bg);box-shadow:0 0 18px var(--g-glow);}
+/* aside */
+.contact-aside{display:flex;flex-direction:column;gap:1px;}
+.aside-block{border:1px solid var(--border);background:var(--panel);padding:16px 14px;}
+.aside-label{font-family:var(--term);font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.aside-label::before{content:'// ';color:var(--muted);}
+.aside-link{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-family:var(--term);font-size:.88rem;color:rgba(0,255,65,.45);text-decoration:none;letter-spacing:.06em;transition:color .12s;cursor:none;}
+.aside-link:hover{color:var(--c);text-shadow:0 0 6px var(--c-glow);}
+.aside-link:last-child{border-bottom:none;}
+.aside-icon{width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-family:var(--term);font-size:.7rem;color:var(--dim);border:1px solid var(--border);}
+.avail{padding:9px 12px;background:var(--g-dim);border:1px solid rgba(0,255,65,.3);font-family:var(--term);font-size:.82rem;color:var(--g);letter-spacing:.1em;text-transform:uppercase;display:flex;align-items:center;gap:8px;}
+.cv-btn{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--panel);border:1px solid var(--border);font-family:var(--term);font-size:.88rem;color:var(--g);text-decoration:none;transition:all .12s;cursor:none;letter-spacing:.08em;}
+.cv-btn:hover{background:var(--g-dim);border-color:var(--border2);}
+@media(max-width:760px){.contact-wrap{grid-template-columns:1fr;padding:20px;}}
+</style>
 </head>
 <body>
+<canvas id="mx"></canvas>
 <div id="cur"></div>
-<div id="cur-ring"></div>
 
-<div class="topbar">
-  <div class="tb-addr"><span class="tb-protocol">HTTPS://</span><span class="tb-url">SM.ANALYTICS.PORTFOLIO / CONTACT</span></div>
-  <div class="tb-status">
-    <span>SUJIT.MURARI</span>
-    <span>DATE: <span id="live-date">—</span></span>
-    <span>TIME: <span id="live-clock">00:00:00</span></span>
-    <span class="live">■ LIVE</span>
-  </div>
-  <div class="tb-controls"><div class="tb-btn">—</div><div class="tb-btn">□</div><div class="tb-btn close">✕</div></div>
+<div class="title-bar">
+  <div class="tb-dots"><div class="tb-dot d-r"></div><div class="tb-dot d-a"></div><div class="tb-dot d-g"></div></div>
+  <div class="tb-path">sm@analytics-sys:~$ <em>ssh hire@murari.sujit -p 22</em></div>
+  <div class="tb-meta"><span>MEM: 84%</span><span>CPU: 23%</span><span class="tb-alert">● INTERNSHIP MODE: ON</span></div>
 </div>
-
-<nav>
-  <a class="nav-logo" href="index.html"><span>Sujit Murari</span><span class="jp">スジット・ムラリ</span></a>
-  <ul class="nav-items">
-    <li><a href="skills.html">/ Skills スキル</a></li>
-    <li><a href="projects.html">/ Projects 作品</a></li>
-    <li><a href="about.html">/ About 概要</a></li>
-    <li><a href="connect.html">/ Connect 接続</a></li>
-    <li><a href="contact.html" class="active">/ Contact 連絡</a></li>
+<nav class="menu-bar">
+  <a class="mb-logo" href="index.html">SM<span>://</span>SYS</a>
+  <ul class="mb-nav">
+    <li><a href="skills.html">SKILLS</a></li>
+    <li><a href="projects.html">PROJECTS</a></li>
+    <li><a href="about.html">ABOUT</a></li>
+    <li><a href="connect.html">CONNECT</a></li>
+    <li><a href="contact.html" class="act">CONTACT</a></li>
   </ul>
-  <div class="nav-right"><div class="nav-tag"><span class="dot-live"></span>OPEN TO INTERNSHIPS</div></div>
+  <div class="mb-right">
+    <div class="mb-clock" id="mbclk">00:00:00</div>
+    <div class="mb-online"><span class="pulse"></span>ONLINE</div>
+  </div>
 </nav>
 
-<div class="ruler"><div class="ruler-marks">
-  <span>REACH OUT</span><span>CONTACT</span><span>連絡</span><span>EMAIL</span>
-  <span>INTERNSHIP</span><span>COLLAB</span><span>INQUIRY</span><span>FORM</span>
-  <span>HIRE</span><span>ME</span><span>ANALYTICS</span><span>STUDIO</span>
-</div></div>
+<div class="page">
 
-<div class="page-wrap">
-  <div class="page-hero">
-    <div class="ph-num">// 05</div>
-    <h1 class="ph-title">Contact <span class="ph-jp">連絡</span></h1>
-    <p class="ph-sub">REACH OUT · お問い合わせ · INTERNSHIP INQUIRIES WELCOME</p>
+  <div class="pg-hero reveal">
+    <div class="pg-breadcrumb"><a href="index.html">SM://HOME</a><span>/</span>CONTACT</div>
+    <div class="pg-num">// 05</div>
+    <div class="pg-title">SSH<span>_HANDSHAKE</span></div>
+    <div class="pg-sub">&gt;_ PORT 22 OPEN · INTERNSHIP INQUIRIES WELCOME</div>
   </div>
 
-  <section class="inner-section">
-    <div class="contact-grid reveal">
-      <div class="contact-form-wrap">
-        <form id="contact-form" action="#" method="POST">
-          <div class="f-row">
-            <div class="f-group">
-              <label class="f-label">Name 名前</label>
-              <input type="text" name="name" placeholder="Your name">
-            </div>
-            <div class="f-group">
-              <label class="f-label">Email メール</label>
-              <input type="email" name="email" placeholder="you@company.com">
-            </div>
-          </div>
-          <div class="f-group">
-            <label class="f-label">Subject 件名</label>
-            <input type="text" name="subject" placeholder="Internship inquiry / Collaboration / Other">
-          </div>
-          <div class="f-group">
-            <label class="f-label">Message メッセージ</label>
-            <textarea rows="6" name="message" placeholder="Describe the opportunity or project..."></textarea>
-          </div>
-          <button type="submit" class="btn-submit">Send Message メッセージ送信</button>
-        </form>
-        <div class="email-direct">Direct 直接: <a href="mailto:sujitmurari06@gmail.com">sujitmurari06@gmail.com</a></div>
-      </div>
+  <div class="sec-head">
+    <span class="sec-label">ssh hire@murari — SECURE CHANNEL</span>
+    <span class="sec-badge sbr">PORT 22 OPEN</span>
+  </div>
 
-      <div class="contact-aside">
-        <div class="aside-block">
-          <div class="aside-label">Direct Contact 直接連絡</div>
-          <a href="mailto:sujitmurari06@gmail.com" class="aside-link"><span class="aside-ico">@</span>sujitmurari06@gmail.com</a>
-          <a href="https://www.linkedin.com/in/sujitmurari06/" target="_blank" class="aside-link"><span class="aside-ico" style="color:#0077b5;">Li</span>linkedin.com/in/sujitmurari06</a>
-          <a href="https://public.tableau.com/app/profile/sujit.murari/vizzes" target="_blank" class="aside-link"><span class="aside-ico" style="color:#1f77b4;">TB</span>Tableau Public</a>
+  <div class="contact-wrap">
+
+    <div class="reveal">
+      <form id="cf">
+        <div class="ssh-head">
+          Connecting to hire@murari.sujit...<br>
+          <span style="color:var(--g);">Connection established. Please authenticate.</span>
         </div>
-        <div class="aside-block">
-          <div class="aside-label">Status 状態</div>
-          <div class="avail-badge"><span class="dot-live"></span>OPEN TO INTERNSHIPS · 2025</div>
+        <div class="ssh-field">
+          <label class="ssh-lbl">IDENTIFY (name)</label>
+          <input class="ssh-in" type="text" name="name" placeholder="your_name">
         </div>
-        <div class="aside-block">
-          <div class="aside-label">Resume 履歴書</div>
-          <a href="resume.pdf" download class="cv-btn"><span>↓ Download Resume</span><span style="opacity:.4;font-size:.52rem;">PDF</span></a>
+        <div class="ssh-field">
+          <label class="ssh-lbl">RETURN ADDRESS (email)</label>
+          <input class="ssh-in" type="email" name="email" placeholder="you@company.com">
         </div>
+        <div class="ssh-field">
+          <label class="ssh-lbl">SUBJECT (purpose)</label>
+          <input class="ssh-in" type="text" name="subject" placeholder="internship_inquiry / collaboration / other">
+        </div>
+        <div class="ssh-field">
+          <label class="ssh-lbl">PAYLOAD (message)</label>
+          <textarea class="ssh-in" rows="6" name="message" placeholder="Describe the opportunity or project..."></textarea>
+        </div>
+        <button type="submit" class="ssh-btn">[TRANSMIT_MESSAGE]</button>
+      </form>
+      <div style="margin-top:12px;font-family:var(--term);font-size:.8rem;color:var(--dim);">
+        Direct: <a href="mailto:sujitmurari06@gmail.com" style="color:var(--c);text-decoration:none;">sujitmurari06@gmail.com</a>
       </div>
     </div>
-  </section>
+
+    <div class="contact-aside reveal">
+
+      <div class="aside-block">
+        <div class="aside-label">Direct Contact</div>
+        <a class="aside-link" href="mailto:sujitmurari06@gmail.com">
+          <div class="aside-icon" style="color:var(--g);border-color:rgba(0,255,65,.3);">@</div>
+          sujitmurari06@gmail.com
+        </a>
+        <a class="aside-link" href="https://www.linkedin.com/in/sujitmurari06/" target="_blank">
+          <div class="aside-icon" style="color:#0077b5;border-color:rgba(0,119,181,.3);">Li</div>
+          linkedin.com/in/sujitmurari06
+        </a>
+        <a class="aside-link" href="https://public.tableau.com/app/profile/sujit.murari/vizzes" target="_blank">
+          <div class="aside-icon" style="color:#1f77b4;border-color:rgba(31,119,180,.3);">TB</div>
+          Tableau Public
+        </a>
+      </div>
+
+      <div class="aside-block">
+        <div class="aside-label">Status</div>
+        <div class="avail"><span class="pulse"></span>OPEN TO INTERNSHIPS · 2025</div>
+      </div>
+
+      <div class="aside-block">
+        <div class="aside-label">Resume</div>
+        <a href="resume.pdf" download class="cv-btn">
+          <span>↓ Download Resume</span>
+          <span style="opacity:.4;font-size:.7rem;font-family:var(--term);">PDF</span>
+        </a>
+      </div>
+
+      <div class="aside-block" style="font-family:var(--term);font-size:.85rem;color:var(--dim);line-height:1.7;">
+        <div class="aside-label">Terminal Log</div>
+        <div class="tl"><span class="tp">$</span><span class="tc" style="margin-left:5px;">ping murari.sujit</span></div>
+        <div class="to ok">✓ REPLY 8ms — ONLINE</div>
+        <div class="tl"><span class="tp">$</span><span class="tc" style="margin-left:5px;">status --hire</span></div>
+        <div class="to" style="color:var(--a);">⚡ ACTIVELY SEEKING</div>
+        <div class="tl"><span class="tp">$</span><span class="tc" style="margin-left:5px;">_<span class="tcur"></span></span></div>
+      </div>
+
+    </div>
+  </div>
 </div>
 
-<div class="footer-bottom"><div class="fb-l">© 2026 SUJIT MURARI</div><div class="fb-r">← <a href="connect.html" style="color:var(--dim);text-decoration:none;">CONNECT</a> &nbsp;|&nbsp; <a href="index.html" style="color:var(--dim);text-decoration:none;">HOME →</a></div></div>
-<script src="script.js"></script>
+<div class="status-bar">
+  <div class="sc act">SM://CONTACT</div>
+  <div class="sc">SUJIT MURARI</div>
+  <div class="sc cy">PORT 22 OPEN</div>
+  <div class="sc al">● OPEN TO INTERNSHIPS</div>
+  <div class="sc ml" id="sbtime">00:00:00</div>
+</div>
+
+<script src="cyber.js"></script>
 </body>
 </html>

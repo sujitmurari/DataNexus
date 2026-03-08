@@ -3,124 +3,149 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Skills スキル | Sujit Murari</title>
-<link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+<title>SKILLS — SM://ANALYTICS.SYS</title>
+<link rel="stylesheet" href="cyber.css">
+<style>
+/* ── SKILLS PAGE ── */
+.sk-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);padding:40px;gap:32px;}
+.sk-section{display:flex;flex-direction:column;gap:10px;}
+.sk-sec-head{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+.sk-sec-title{font-family:var(--orb);font-size:.75rem;font-weight:700;color:var(--c);letter-spacing:.14em;text-transform:uppercase;text-shadow:0 0 10px var(--c-glow);}
+.sk-sec-num{font-family:var(--term);font-size:.8rem;color:var(--dim);}
+.sk-row{display:flex;flex-direction:column;gap:4px;padding:10px 14px;border:1px solid var(--border);background:rgba(0,255,65,.015);transition:background .12s,border-color .12s;cursor:none;}
+.sk-row:hover{background:var(--g-dim);border-color:var(--border2);}
+.sk-lbl{display:flex;justify-content:space-between;align-items:center;}
+.sk-name{font-family:var(--term);font-size:1.05rem;letter-spacing:.07em;color:rgba(0,255,65,.75);}
+.sk-row:hover .sk-name{color:var(--g);}
+.sk-pct{font-family:var(--term);font-size:.9rem;color:var(--dim);}
+.sk-track{height:2px;background:rgba(0,255,65,.07);}
+.sk-fill{height:100%;transform:scaleX(0);transform-origin:left;}
+.sf-g{background:var(--g);box-shadow:0 0 5px var(--g-glow);}
+.sf-c{background:var(--c);box-shadow:0 0 5px var(--c-glow);}
+.sf-a{background:var(--a);}
+.sf-r{background:var(--r);}
+
+.tool-grid{display:flex;flex-wrap:wrap;gap:6px;padding:28px 40px;}
+.tool-chip{font-family:var(--term);font-size:.95rem;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border:1px solid var(--border);color:var(--dim);transition:all .12s;cursor:none;}
+.tool-chip:hover{color:var(--g);border-color:var(--border2);background:var(--g-dim);}
+.tool-chip.c{border-color:rgba(0,229,255,.2);color:rgba(0,229,255,.55);}
+.tool-chip.a{border-color:rgba(255,215,0,.2);color:rgba(255,215,0,.55);}
+@media(max-width:700px){.sk-grid{grid-template-columns:1fr;padding:20px;}.tool-grid{padding:20px;}}
+</style>
 </head>
 <body>
+<canvas id="mx"></canvas>
 <div id="cur"></div>
-<div id="cur-ring"></div>
 
-<div class="topbar">
-  <div class="tb-addr"><span class="tb-protocol">HTTPS://</span><span class="tb-url">SM.ANALYTICS.PORTFOLIO / SKILLS</span></div>
-  <div class="tb-status">
-    <span>SUJIT.MURARI</span>
-    <span>DATE: <span id="live-date">—</span></span>
-    <span>TIME: <span id="live-clock">00:00:00</span></span>
-    <span class="live">■ LIVE</span>
-  </div>
-  <div class="tb-controls"><div class="tb-btn">—</div><div class="tb-btn">□</div><div class="tb-btn close">✕</div></div>
+<div class="title-bar">
+  <div class="tb-dots"><div class="tb-dot d-r"></div><div class="tb-dot d-a"></div><div class="tb-dot d-g"></div></div>
+  <div class="tb-path">sm@analytics-sys:~$ <em>cat skills/capabilities.log</em></div>
+  <div class="tb-meta"><span>MEM: 84%</span><span>CPU: 23%</span><span class="tb-alert">● INTERNSHIP MODE: ON</span></div>
 </div>
-
-<nav>
-  <a class="nav-logo" href="index.html"><span>Sujit Murari</span><span class="jp">スジット・ムラリ</span></a>
-  <ul class="nav-items">
-    <li><a href="skills.html" class="active">/ Skills スキル</a></li>
-    <li><a href="projects.html">/ Projects 作品</a></li>
-    <li><a href="about.html">/ About 概要</a></li>
-    <li><a href="connect.html">/ Connect 接続</a></li>
-    <li><a href="contact.html">/ Contact 連絡</a></li>
+<nav class="menu-bar">
+  <a class="mb-logo" href="index.html">SM<span>://</span>SYS</a>
+  <ul class="mb-nav">
+    <li><a href="skills.html" class="act">SKILLS</a></li>
+    <li><a href="projects.html">PROJECTS</a></li>
+    <li><a href="about.html">ABOUT</a></li>
+    <li><a href="connect.html">CONNECT</a></li>
+    <li><a href="contact.html">CONTACT</a></li>
   </ul>
-  <div class="nav-right"><div class="nav-tag"><span class="dot-live"></span>OPEN TO INTERNSHIPS</div></div>
+  <div class="mb-right">
+    <div class="mb-clock" id="mbclk">00:00:00</div>
+    <div class="mb-online"><span class="pulse"></span>ONLINE</div>
+  </div>
 </nav>
 
-<div class="ruler"><div class="ruler-marks">
-  <span>CAPABILITIES</span><span>SKILLS</span><span>スキル</span><span>TOOLS</span>
-  <span>VIZ</span><span>DATA</span><span>CODE</span><span>STATS</span>
-  <span>TABLEAU</span><span>PYTHON</span><span>SQL</span><span>EXCEL</span>
-</div></div>
+<div class="page">
 
-<div class="page-wrap">
-  <div class="page-hero">
-    <div class="ph-num">// 01</div>
-    <h1 class="ph-title">Skills <span class="ph-jp">スキル</span></h1>
-    <p class="ph-sub">CAPABILITIES · 12+ CORE SKILLS · ANALYTICS STACK</p>
+  <div class="pg-hero reveal">
+    <div class="pg-breadcrumb"><a href="index.html">SM://HOME</a><span>/</span>SKILLS</div>
+    <div class="pg-num">// 01</div>
+    <div class="pg-title">SKILL<span>_METRICS</span></div>
+    <div class="pg-sub">&gt;_ CAPABILITIES · 12+ CORE SKILLS · ANALYTICS STACK</div>
   </div>
 
-  <section class="inner-section">
-    <div class="s-header">
-      <div class="s-id">// VISUALISATION</div>
-      <div class="s-title-wrap"><span class="s-title-en">Data Visualization</span><span class="s-title-jp">データ可視化</span></div>
-    </div>
-    <div class="skills-grid reveal" id="sg1">
-      <div class="skill-col">
-        <div class="skill-col-num">// 01</div>
-        <div class="skill-col-title">Tableau</div>
-        <div class="skill-col-jp">データ可視化</div>
-        <div class="skill-items">
-          <div class="sk-item"><div class="sk-label"><span>Tableau Public/Desktop</span><span class="sk-pct">92%</span></div><div class="sk-track"><div class="sk-fill c1" data-w=".92"></div></div></div>
-          <div class="sk-item"><div class="sk-label"><span>Dashboard Design</span><span class="sk-pct">88%</span></div><div class="sk-track"><div class="sk-fill c1" data-w=".88"></div></div></div>
-          <div class="sk-item"><div class="sk-label"><span>KPI Analysis</span><span class="sk-pct">85%</span></div><div class="sk-track"><div class="sk-fill c1" data-w=".85"></div></div></div>
-          <div class="sk-item"><div class="sk-label"><span>Data Visualisation</span><span class="sk-pct">87%</span></div><div class="sk-track"><div class="sk-fill c1" data-w=".87"></div></div></div>
-        </div>
-      </div>
-      <div class="skill-col">
-        <div class="skill-col-num">// 02</div>
-        <div class="skill-col-title">Analysis</div>
-        <div class="skill-col-jp">データ分析</div>
-        <div class="skill-items">
-          <div class="sk-item"><div class="sk-label"><span>Excel</span><span class="sk-pct">89%</span></div><div class="sk-track"><div class="sk-fill c2" data-w=".89"></div></div></div>
-          <div class="sk-item"><div class="sk-label"><span>SQL / MySQL</span><span class="sk-pct">76%</span></div><div class="sk-track"><div class="sk-fill c2" data-w=".76"></div></div></div>
-          <div class="sk-item"><div class="sk-label"><span>Data Cleaning</span><span class="sk-pct">86%</span></div><div class="sk-track"><div class="sk-fill c2" data-w=".86"></div></div></div>
-        </div>
-      </div>
-      <div class="skill-col">
-        <div class="skill-col-num">// 03</div>
-        <div class="skill-col-title">Programming</div>
-        <div class="skill-col-jp">プログラミング</div>
-        <div class="skill-items">
-          <div class="sk-item"><div class="sk-label"><span>Python — Analytics</span><span class="sk-pct">73%</span></div><div class="sk-track"><div class="sk-fill c3" data-w=".73"></div></div></div>
-          <div class="sk-item"><div class="sk-label"><span>Pandas / NumPy</span><span class="sk-pct">70%</span></div><div class="sk-track"><div class="sk-fill c3" data-w=".70"></div></div></div>
-          <div class="sk-item"><div class="sk-label"><span>Python — ML Basics</span><span class="sk-pct">60%</span></div><div class="sk-track"><div class="sk-fill c3" data-w=".60"></div></div></div>
-        </div>
-      </div>
-      <div class="skill-col">
-        <div class="skill-col-num">// 04</div>
-        <div class="skill-col-title">Statistics</div>
-        <div class="skill-col-jp">統計学</div>
-        <div class="skill-items">
-          <div class="sk-item"><div class="sk-label"><span>Regression Analysis</span><span class="sk-pct">78%</span></div><div class="sk-track"><div class="sk-fill c4" data-w=".78"></div></div></div>
-          <div class="sk-item"><div class="sk-label"><span>Correlation Analysis</span><span class="sk-pct">80%</span></div><div class="sk-track"><div class="sk-fill c4" data-w=".80"></div></div></div>
-          <div class="sk-item"><div class="sk-label"><span>Business Finance</span><span class="sk-pct">77%</span></div><div class="sk-track"><div class="sk-fill c4" data-w=".77"></div></div></div>
-          <div class="sk-item"><div class="sk-label"><span>Business Analytics</span><span class="sk-pct">84%</span></div><div class="sk-track"><div class="sk-fill c4" data-w=".84"></div></div></div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <div class="sec-head">
+    <span class="sec-label">SKILL LOAD — PROCESS METRICS</span>
+    <span class="sec-badge sbg">10 ACTIVE</span>
+  </div>
 
-  <section class="inner-section">
-    <div class="s-header">
-      <div class="s-id">// TOOL STACK</div>
-      <div class="s-title-wrap"><span class="s-title-en">Core Tools</span><span class="s-title-jp">コアツール</span></div>
+  <div class="sk-grid">
+
+    <div class="sk-section reveal" id="sk1">
+      <div class="sk-sec-head">
+        <span class="sk-sec-num">// 01</span>
+        <span class="sk-sec-title">Visualisation データ可視化</span>
+      </div>
+      <div class="sk-row"><div class="sk-lbl"><span class="sk-name">Tableau Public / Desktop</span><span class="sk-pct">92%</span></div><div class="sk-track"><div class="sk-fill sf-g" data-w=".92"></div></div></div>
+      <div class="sk-row"><div class="sk-lbl"><span class="sk-name">Dashboard Design</span><span class="sk-pct">88%</span></div><div class="sk-track"><div class="sk-fill sf-g" data-w=".88"></div></div></div>
+      <div class="sk-row"><div class="sk-lbl"><span class="sk-name">KPI Analysis</span><span class="sk-pct">85%</span></div><div class="sk-track"><div class="sk-fill sf-g" data-w=".85"></div></div></div>
+      <div class="sk-row"><div class="sk-lbl"><span class="sk-name">Data Visualisation</span><span class="sk-pct">87%</span></div><div class="sk-track"><div class="sk-fill sf-g" data-w=".87"></div></div></div>
     </div>
-    <div class="tool-chips reveal">
-      <div class="tool-chip c1">Tableau Public</div>
-      <div class="tool-chip c1">Tableau Desktop</div>
-      <div class="tool-chip c2">Microsoft Excel</div>
-      <div class="tool-chip c2">MySQL Workbench</div>
-      <div class="tool-chip c3">Python</div>
-      <div class="tool-chip c3">Pandas</div>
-      <div class="tool-chip c3">NumPy</div>
-      <div class="tool-chip c4">Regression</div>
-      <div class="tool-chip c4">Correlation</div>
-      <div class="tool-chip c4">Distribution Analysis</div>
-      <div class="tool-chip c4">KPI Modeling</div>
-      <div class="tool-chip c2">Data Cleaning</div>
+
+    <div class="sk-section reveal" id="sk2">
+      <div class="sk-sec-head">
+        <span class="sk-sec-num">// 02</span>
+        <span class="sk-sec-title">Analysis データ分析</span>
+      </div>
+      <div class="sk-row"><div class="sk-lbl"><span class="sk-name">Excel</span><span class="sk-pct">89%</span></div><div class="sk-track"><div class="sk-fill sf-c" data-w=".89"></div></div></div>
+      <div class="sk-row"><div class="sk-lbl"><span class="sk-name">SQL / MySQL</span><span class="sk-pct">76%</span></div><div class="sk-track"><div class="sk-fill sf-c" data-w=".76"></div></div></div>
+      <div class="sk-row"><div class="sk-lbl"><span class="sk-name">Data Cleaning</span><span class="sk-pct">86%</span></div><div class="sk-track"><div class="sk-fill sf-c" data-w=".86"></div></div></div>
     </div>
-  </section>
+
+    <div class="sk-section reveal" id="sk3">
+      <div class="sk-sec-head">
+        <span class="sk-sec-num">// 03</span>
+        <span class="sk-sec-title">Programming プログラミング</span>
+      </div>
+      <div class="sk-row"><div class="sk-lbl"><span class="sk-name">Python — Analytics</span><span class="sk-pct">73%</span></div><div class="sk-track"><div class="sk-fill sf-a" data-w=".73"></div></div></div>
+      <div class="sk-row"><div class="sk-lbl"><span class="sk-name">Pandas / NumPy</span><span class="sk-pct">70%</span></div><div class="sk-track"><div class="sk-fill sf-a" data-w=".70"></div></div></div>
+      <div class="sk-row"><div class="sk-lbl"><span class="sk-name">Python — ML Basics</span><span class="sk-pct">60%</span></div><div class="sk-track"><div class="sk-fill sf-a" data-w=".60"></div></div></div>
+    </div>
+
+    <div class="sk-section reveal" id="sk4">
+      <div class="sk-sec-head">
+        <span class="sk-sec-num">// 04</span>
+        <span class="sk-sec-title">Statistics 統計学</span>
+      </div>
+      <div class="sk-row"><div class="sk-lbl"><span class="sk-name">Regression Analysis</span><span class="sk-pct">78%</span></div><div class="sk-track"><div class="sk-fill sf-r" data-w=".78"></div></div></div>
+      <div class="sk-row"><div class="sk-lbl"><span class="sk-name">Correlation Analysis</span><span class="sk-pct">80%</span></div><div class="sk-track"><div class="sk-fill sf-r" data-w=".80"></div></div></div>
+      <div class="sk-row"><div class="sk-lbl"><span class="sk-name">Business Finance</span><span class="sk-pct">77%</span></div><div class="sk-track"><div class="sk-fill sf-r" data-w=".77"></div></div></div>
+      <div class="sk-row"><div class="sk-lbl"><span class="sk-name">Business Analytics</span><span class="sk-pct">84%</span></div><div class="sk-track"><div class="sk-fill sf-r" data-w=".84"></div></div></div>
+    </div>
+
+  </div>
+
+  <div class="sec-head">
+    <span class="sec-label">TOOL STACK — LOADED MODULES</span>
+    <span class="sec-badge sbc">12 TOOLS</span>
+  </div>
+  <div class="tool-grid reveal">
+    <div class="tool-chip">Tableau Public</div>
+    <div class="tool-chip">Tableau Desktop</div>
+    <div class="tool-chip c">Microsoft Excel</div>
+    <div class="tool-chip c">MySQL Workbench</div>
+    <div class="tool-chip a">Python</div>
+    <div class="tool-chip a">Pandas</div>
+    <div class="tool-chip a">NumPy</div>
+    <div class="tool-chip">Regression</div>
+    <div class="tool-chip">Correlation</div>
+    <div class="tool-chip">Distribution Analysis</div>
+    <div class="tool-chip">KPI Modeling</div>
+    <div class="tool-chip c">Data Cleaning</div>
+  </div>
+
 </div>
 
-<div class="footer-bottom"><div class="fb-l">© 2026 SUJIT MURARI</div><div class="fb-r">← <a href="index.html" style="color:var(--dim);text-decoration:none;">HOME</a> &nbsp;|&nbsp; <a href="projects.html" style="color:var(--dim);text-decoration:none;">PROJECTS →</a></div></div>
-<script src="script.js"></script>
+<div class="status-bar">
+  <div class="sc act">SM://SKILLS</div>
+  <div class="sc">SUJIT MURARI</div>
+  <div class="sc cy">12+ SKILLS LOADED</div>
+  <div class="sc al">● OPEN TO INTERNSHIPS</div>
+  <div class="sc ml" id="sbtime">00:00:00</div>
+</div>
+
+<script src="cyber.js"></script>
 </body>
 </html>

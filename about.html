@@ -3,163 +3,170 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About 概要 | Sujit Murari</title>
-<link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+<title>ABOUT — SM://ANALYTICS.SYS</title>
+<link rel="stylesheet" href="cyber.css">
+<style>
+.about-grid{display:grid;grid-template-columns:300px 1fr;gap:28px;padding:40px;align-items:start;}
+/* sidebar */
+.about-sidebar{display:flex;flex-direction:column;gap:1px;}
+.about-photo-frame{position:relative;width:100%;aspect-ratio:3/4;max-height:320px;overflow:hidden;border:1px solid var(--border);}
+.about-photo{width:100%;height:100%;object-fit:cover;object-position:top;filter:grayscale(100%) contrast(1.2) brightness(.7);}
+.about-photo-tint{position:absolute;inset:0;background:rgba(0,255,65,.06);}
+.about-photo-scan{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--g),transparent);animation:apscan 3s linear infinite;box-shadow:0 0 6px var(--g-glow);}
+@keyframes apscan{0%{top:0;opacity:.9}100%{top:100%;opacity:0}}
+.about-photo-label{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-family:var(--term);font-size:.55rem;letter-spacing:.14em;color:var(--g);text-shadow:0 0 6px var(--g-glow);}
+.adr{padding:8px 12px;border:1px solid var(--border);background:rgba(0,255,65,.015);display:flex;flex-direction:column;gap:2px;transition:background .12s;}
+.adr:hover{background:var(--g-dim);}
+.adr-key{font-family:var(--term);font-size:.72rem;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;}
+.adr-val{font-family:var(--term);font-size:.92rem;color:var(--g);letter-spacing:.06em;}
+.adr-val a{color:var(--c);text-decoration:none;}
+.adr-val a:hover{text-shadow:0 0 6px var(--c-glow);}
+.adr-val.al{color:var(--r);animation:blink 1.4s ease-in-out infinite;}
+/* body */
+.about-body{display:flex;flex-direction:column;gap:28px;}
+.ab-block{display:flex;flex-direction:column;gap:10px;}
+.ab-label{font-family:var(--term);font-size:.85rem;color:var(--c);letter-spacing:.16em;text-transform:uppercase;display:flex;align-items:center;gap:10px;}
+.ab-label::before{content:'// ';}
+.ab-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.ab-text{font-family:var(--mono);font-size:.75rem;line-height:1.9;color:rgba(0,255,65,.45);letter-spacing:.04em;}
+.ab-text strong{color:var(--g);font-weight:400;}
+.mission-quote{font-family:var(--orb);font-size:1.1rem;font-weight:700;color:var(--g);border-left:3px solid var(--c);padding-left:18px;letter-spacing:.04em;line-height:1.25;text-shadow:0 0 10px var(--g-glow);}
+/* stack tags */
+.stack-rows{display:flex;flex-direction:column;gap:8px;}
+.stack-row{display:flex;align-items:flex-start;gap:14px;padding:8px 0;border-bottom:1px solid var(--border);}
+.stack-cat{font-family:var(--term);font-size:.78rem;letter-spacing:.1em;color:var(--dim);text-transform:uppercase;min-width:150px;padding-top:2px;}
+.stack-tags{display:flex;flex-wrap:wrap;gap:4px;}
+.stag{font-family:var(--term);font-size:.82rem;padding:2px 9px;border:1px solid;}
+.stag-g{color:rgba(0,255,65,.7);border-color:rgba(0,255,65,.25);background:var(--g-dim);}
+.stag-c{color:rgba(0,229,255,.65);border-color:rgba(0,229,255,.22);background:var(--c-dim);}
+.stag-a{color:rgba(255,215,0,.65);border-color:rgba(255,215,0,.22);background:var(--a-dim);}
+.stag-r{color:rgba(255,0,60,.65);border-color:rgba(255,0,60,.22);background:var(--r-dim);}
+/* courses */
+.course-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.course-row{font-family:var(--term);font-size:.9rem;padding:9px 12px;border:1px solid var(--border);color:var(--dim);display:flex;align-items:center;gap:8px;transition:all .12s;cursor:none;}
+.course-row:hover{background:var(--g-dim);border-color:var(--border2);color:var(--g);}
+.course-row::before{content:'▸';font-size:.65rem;color:var(--muted);flex-shrink:0;}
+/* status */
+.status-pill{display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid rgba(0,255,65,.35);background:var(--g-dim);font-family:var(--term);font-size:.92rem;color:var(--g);letter-spacing:.1em;text-transform:uppercase;}
+@media(max-width:760px){.about-grid{grid-template-columns:1fr;}.course-grid{grid-template-columns:1fr;}}
+</style>
 </head>
 <body>
+<canvas id="mx"></canvas>
 <div id="cur"></div>
-<div id="cur-ring"></div>
 
-<div class="topbar">
-  <div class="tb-addr"><span class="tb-protocol">HTTPS://</span><span class="tb-url">SM.ANALYTICS.PORTFOLIO / ABOUT</span></div>
-  <div class="tb-status">
-    <span>SUJIT.MURARI</span>
-    <span>DATE: <span id="live-date">—</span></span>
-    <span>TIME: <span id="live-clock">00:00:00</span></span>
-    <span class="live">■ LIVE</span>
-  </div>
-  <div class="tb-controls"><div class="tb-btn">—</div><div class="tb-btn">□</div><div class="tb-btn close">✕</div></div>
+<div class="title-bar">
+  <div class="tb-dots"><div class="tb-dot d-r"></div><div class="tb-dot d-a"></div><div class="tb-dot d-g"></div></div>
+  <div class="tb-path">sm@analytics-sys:~$ <em>cat about.txt</em></div>
+  <div class="tb-meta"><span>MEM: 84%</span><span>CPU: 23%</span><span class="tb-alert">● INTERNSHIP MODE: ON</span></div>
 </div>
-
-<nav>
-  <a class="nav-logo" href="index.html"><span>Sujit Murari</span><span class="jp">スジット・ムラリ</span></a>
-  <ul class="nav-items">
-    <li><a href="skills.html">/ Skills スキル</a></li>
-    <li><a href="projects.html">/ Projects 作品</a></li>
-    <li><a href="about.html" class="active">/ About 概要</a></li>
-    <li><a href="connect.html">/ Connect 接続</a></li>
-    <li><a href="contact.html">/ Contact 連絡</a></li>
+<nav class="menu-bar">
+  <a class="mb-logo" href="index.html">SM<span>://</span>SYS</a>
+  <ul class="mb-nav">
+    <li><a href="skills.html">SKILLS</a></li>
+    <li><a href="projects.html">PROJECTS</a></li>
+    <li><a href="about.html" class="act">ABOUT</a></li>
+    <li><a href="connect.html">CONNECT</a></li>
+    <li><a href="contact.html">CONTACT</a></li>
   </ul>
-  <div class="nav-right"><div class="nav-tag"><span class="dot-live"></span>OPEN TO INTERNSHIPS</div></div>
+  <div class="mb-right">
+    <div class="mb-clock" id="mbclk">00:00:00</div>
+    <div class="mb-online"><span class="pulse"></span>ONLINE</div>
+  </div>
 </nav>
 
-<div class="ruler"><div class="ruler-marks">
-  <span>BACKGROUND</span><span>PROFILE</span><span>概要</span><span>DBUU</span>
-  <span>BBA</span><span>SEM IV</span><span>INDIA</span><span>ANALYTICS</span>
-  <span>MISSION</span><span>STACK</span><span>STATUS</span><span>STUDENT</span>
-</div></div>
+<div class="page">
 
-<div class="page-wrap">
-  <div class="page-hero">
-    <div class="ph-num">// 03</div>
-    <h1 class="ph-title">About <span class="ph-jp">概要</span></h1>
-    <p class="ph-sub">BACKGROUND · PROFILE · DBUU · SEM IV</p>
+  <div class="pg-hero reveal">
+    <div class="pg-breadcrumb"><a href="index.html">SM://HOME</a><span>/</span>ABOUT</div>
+    <div class="pg-num">// 03</div>
+    <div class="pg-title">ABOUT<span>_ME</span></div>
+    <div class="pg-sub">&gt;_ BACKGROUND · PROFILE · DBUU · SEM IV</div>
   </div>
 
-  <section class="inner-section">
-    <div class="about-grid reveal">
+  <div class="sec-head">
+    <span class="sec-label">cat about.txt — IDENTITY FILE</span>
+    <span class="sec-badge sbc">READ MODE</span>
+  </div>
 
-      <!-- SIDEBAR -->
-      <div class="about-sidebar">
-        <div class="about-photo-wrap">
-          <img src="me.jpeg" alt="Sujit Murari" class="about-photo">
-          <div class="about-photo-label">SUBJECT_01</div>
-        </div>
-        <div class="about-id-block" style="margin-top:16px;">
-          <div class="about-name-jp">スジット・ムラリ</div>
-          <div class="about-name">Sujit Murari</div>
-          <div class="about-role">BBA · Business Analytics</div>
-        </div>
-        <div class="about-data-row"><div class="adr-key">Degree 学位</div><div class="adr-val">BBA — Business Analytics</div></div>
-        <div class="about-data-row"><div class="adr-key">University 大学</div><div class="adr-val">Dev Bhoomi Uttarakhand Univ.</div></div>
-        <div class="about-data-row"><div class="adr-key">Semester 学期</div><div class="adr-val">IV — Current</div></div>
-        <div class="about-data-row"><div class="adr-key">Location 場所</div><div class="adr-val">Uttarakhand, India</div></div>
-        <div class="about-data-row"><div class="adr-key">LinkedIn</div><div class="adr-val"><a href="https://www.linkedin.com/in/sujitmurari06/" target="_blank">sujitmurari06 ↗</a></div></div>
-        <div class="about-data-row"><div class="adr-key">Email</div><div class="adr-val"><a href="mailto:sujitmurari06@gmail.com">sujitmurari06@gmail.com</a></div></div>
-        <div class="about-status"><span class="dot-live"></span>OPEN TO INTERNSHIPS · 2025</div>
+  <div class="about-grid">
+
+    <!-- SIDEBAR -->
+    <div class="about-sidebar reveal">
+      <div class="about-photo-frame">
+        <img src="me.jpeg" alt="Sujit Murari" class="about-photo">
+        <div class="about-photo-tint"></div>
+        <div class="about-photo-scan"></div>
+        <div class="about-photo-label">SUBJECT_01 · MURARI.SUJIT</div>
       </div>
-
-      <!-- BODY -->
-      <div class="about-body">
-
-        <div class="about-bio-block">
-          <div class="abb-label">// IDENTITY · アイデンティティ</div>
-          <p>I am <strong>Sujit Murari</strong>, a Business Analytics student focused on decoding complex data systems and transforming them into <strong>strategic business intelligence</strong>. My work operates at the intersection of analytics, technology, and decision science, where raw data becomes actionable insight.</p>
-        </div>
-
-        <div class="about-bio-block">
-          <div class="abb-label">// WORKFLOW · ワークフロー</div>
-          <p>Inside my analytics workflow, datasets are treated as <strong>information networks</strong>. I analyze patterns, extract signals, and design dashboards that allow organizations to monitor performance, optimize operations, and make evidence-based decisions.</p>
-        </div>
-
-        <div class="about-stack-block">
-          <div class="abb-label">// CORE ANALYTICS STACK · コアスタック</div>
-          <div class="stack-rows">
-            <div class="stack-row">
-              <div class="stack-cat">DATA ANALYSIS</div>
-              <div class="stack-items">
-                <span class="stk c2">Excel</span>
-                <span class="stk c2">SQL</span>
-                <span class="stk c3">Python</span>
-              </div>
-            </div>
-            <div class="stack-row">
-              <div class="stack-cat">VISUALIZATION</div>
-              <div class="stack-items">
-                <span class="stk c1">Tableau</span>
-                <span class="stk c1">Interactive Dashboards</span>
-                <span class="stk c1">KPI Systems</span>
-                <span class="stk c1">Trend Analytics</span>
-              </div>
-            </div>
-            <div class="stack-row">
-              <div class="stack-cat">ANALYTICS METHODS</div>
-              <div class="stack-items">
-                <span class="stk c4">Regression</span>
-                <span class="stk c4">Correlation</span>
-                <span class="stk c4">Distribution Analysis</span>
-                <span class="stk c4">KPI Modeling</span>
-              </div>
-            </div>
-            <div class="stack-row">
-              <div class="stack-cat">BUSINESS DOMAINS</div>
-              <div class="stack-items">
-                <span class="stk c3">E-Commerce</span>
-                <span class="stk c3">Airline Analytics</span>
-                <span class="stk c3">AI Productivity</span>
-                <span class="stk c3">Operations Data</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="about-mission-block">
-          <div class="abb-label">// MISSION · ミッション</div>
-          <blockquote class="mission-quote">
-            Transform complex datasets into clear strategic intelligence.
-          </blockquote>
-          <p>In a digital economy driven by information, analytics is the interface between data and decision making. My portfolio showcases projects where <strong>structured analysis, visualization, and statistical reasoning</strong> convert raw business data into meaningful insights.</p>
-        </div>
-
-        <div class="about-courses-block">
-          <div class="abb-label">// COURSEWORK · 履修科目</div>
-          <div class="about-courses">
-            <div class="course-item">Finance Analytics (24BAN206I)</div>
-            <div class="course-item">Cost &amp; Management Accounting</div>
-            <div class="course-item">Human Resource Management</div>
-            <div class="course-item">Human Resource Planning</div>
-            <div class="course-item">Statistics for Business</div>
-            <div class="course-item">Business Intelligence</div>
-          </div>
-        </div>
-
-        <div class="about-status-block">
-          <div class="abb-label">// STATUS · ステータス</div>
-          <div class="status-line">
-            <span class="dot-live"></span>
-            <span style="font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;color:var(--alert);">
-              BUSINESS ANALYTICS STUDENT · OPEN TO INTERNSHIPS 2025
-            </span>
-          </div>
-        </div>
-
-      </div>
+      <div class="adr"><div class="adr-key">Entity</div><div class="adr-val">SUJIT MURARI</div></div>
+      <div class="adr"><div class="adr-key">Degree</div><div class="adr-val">BBA — Business Analytics</div></div>
+      <div class="adr"><div class="adr-key">University</div><div class="adr-val">Dev Bhoomi Uttarakhand Univ.</div></div>
+      <div class="adr"><div class="adr-key">Semester</div><div class="adr-val">IV — Current</div></div>
+      <div class="adr"><div class="adr-key">Location</div><div class="adr-val">Uttarakhand, India</div></div>
+      <div class="adr"><div class="adr-key">Email</div><div class="adr-val"><a href="mailto:sujitmurari06@gmail.com">sujitmurari06@gmail.com</a></div></div>
+      <div class="adr"><div class="adr-key">LinkedIn</div><div class="adr-val"><a href="https://www.linkedin.com/in/sujitmurari06/" target="_blank">sujitmurari06 ↗</a></div></div>
+      <div class="adr"><div class="adr-key">Status</div><div class="adr-val al">● OPEN TO INTERNSHIPS</div></div>
     </div>
-  </section>
+
+    <!-- BODY -->
+    <div class="about-body">
+
+      <div class="ab-block reveal">
+        <div class="ab-label">IDENTITY</div>
+        <p class="ab-text">I am <strong>Sujit Murari</strong>, a Business Analytics student focused on decoding complex data systems and transforming them into <strong>strategic business intelligence</strong>. My work operates at the intersection of analytics, technology, and decision science, where raw data becomes actionable insight.</p>
+      </div>
+
+      <div class="ab-block reveal">
+        <div class="ab-label">WORKFLOW</div>
+        <p class="ab-text">Inside my analytics workflow, datasets are treated as <strong>information networks</strong>. I analyze patterns, extract signals, and design dashboards that allow organizations to monitor performance, optimize operations, and make evidence-based decisions.</p>
+      </div>
+
+      <div class="ab-block reveal">
+        <div class="ab-label">ANALYTICS STACK</div>
+        <div class="stack-rows">
+          <div class="stack-row"><div class="stack-cat">DATA ANALYSIS</div><div class="stack-tags"><span class="stag stag-c">Excel</span><span class="stag stag-c">SQL</span><span class="stag stag-a">Python</span></div></div>
+          <div class="stack-row"><div class="stack-cat">VISUALIZATION</div><div class="stack-tags"><span class="stag stag-g">Tableau</span><span class="stag stag-g">Interactive Dashboards</span><span class="stag stag-g">KPI Systems</span><span class="stag stag-g">Trend Analytics</span></div></div>
+          <div class="stack-row"><div class="stack-cat">METHODS</div><div class="stack-tags"><span class="stag stag-r">Regression</span><span class="stag stag-r">Correlation</span><span class="stag stag-r">Distribution Analysis</span><span class="stag stag-r">KPI Modeling</span></div></div>
+          <div class="stack-row"><div class="stack-cat">DOMAINS</div><div class="stack-tags"><span class="stag stag-a">E-Commerce</span><span class="stag stag-a">Airline Analytics</span><span class="stag stag-a">Operations</span><span class="stag stag-a">Retail</span></div></div>
+        </div>
+      </div>
+
+      <div class="ab-block reveal">
+        <div class="ab-label">MISSION</div>
+        <div class="mission-quote">Transform complex datasets into clear strategic intelligence.</div>
+        <p class="ab-text">In a digital economy driven by information, analytics is the interface between data and decision making. My portfolio showcases projects where <strong>structured analysis, visualization, and statistical reasoning</strong> convert raw business data into meaningful insights.</p>
+      </div>
+
+      <div class="ab-block reveal">
+        <div class="ab-label">COURSEWORK</div>
+        <div class="course-grid">
+          <div class="course-row">Finance Analytics (24BAN206I)</div>
+          <div class="course-row">Cost &amp; Management Accounting</div>
+          <div class="course-row">Human Resource Management</div>
+          <div class="course-row">Human Resource Planning</div>
+          <div class="course-row">Statistics for Business</div>
+          <div class="course-row">Business Intelligence</div>
+        </div>
+      </div>
+
+      <div class="ab-block reveal">
+        <div class="ab-label">STATUS</div>
+        <div class="status-pill"><span class="pulse"></span>BUSINESS ANALYTICS STUDENT · OPEN TO INTERNSHIPS 2025</div>
+      </div>
+
+    </div>
+  </div>
 </div>
 
-<div class="footer-bottom"><div class="fb-l">© 2026 SUJIT MURARI</div><div class="fb-r">← <a href="projects.html" style="color:var(--dim);text-decoration:none;">PROJECTS</a> &nbsp;|&nbsp; <a href="connect.html" style="color:var(--dim);text-decoration:none;">CONNECT →</a></div></div>
-<script src="script.js"></script>
+<div class="status-bar">
+  <div class="sc act">SM://ABOUT</div>
+  <div class="sc">SUJIT MURARI</div>
+  <div class="sc cy">BBA · SEM IV · DBUU</div>
+  <div class="sc al">● OPEN TO INTERNSHIPS</div>
+  <div class="sc ml" id="sbtime">00:00:00</div>
+</div>
+
+<script src="cyber.js"></script>
 </body>
 </html>

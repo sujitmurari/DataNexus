@@ -3,80 +3,102 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Connect 接続 | Sujit Murari</title>
-<link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+<title>CONNECT — SM://ANALYTICS.SYS</title>
+<link rel="stylesheet" href="cyber.css">
+<style>
+.conn-wrap{padding:40px;}
+.conn-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;max-width:800px;}
+.conn-card{border:1px solid var(--border);padding:28px 24px;background:var(--panel);cursor:none;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:14px;transition:background .15s,border-color .15s;position:relative;overflow:hidden;}
+.conn-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--g);transform:scaleX(0);transform-origin:left;transition:transform .45s;box-shadow:0 0 8px var(--g-glow);}
+.conn-card:hover{background:rgba(0,255,65,.02);border-color:var(--border2);}
+.conn-card:hover::before{transform:scaleX(1);}
+.conn-top{display:flex;justify-content:space-between;align-items:flex-start;}
+.conn-icon{width:40px;height:40px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--term);font-size:.85rem;color:var(--dim);background:rgba(0,255,65,.02);}
+.conn-arr{font-size:.95rem;color:var(--dim);transition:all .15s;}
+.conn-card:hover .conn-arr{transform:translate(3px,-3px);color:var(--c);}
+.conn-platform{font-family:var(--term);font-size:.8rem;letter-spacing:.14em;color:var(--dim);text-transform:uppercase;}
+.conn-title{font-family:var(--orb);font-size:.9rem;font-weight:700;color:var(--g);letter-spacing:.06em;text-transform:uppercase;text-shadow:0 0 8px var(--g-glow);transition:color .15s;}
+.conn-card:hover .conn-title{color:var(--c);text-shadow:0 0 8px var(--c-glow);}
+.conn-desc{font-family:var(--mono);font-size:.72rem;line-height:1.85;color:rgba(0,255,65,.38);}
+.conn-url{font-family:var(--term);font-size:.78rem;letter-spacing:.07em;color:var(--dim);margin-top:4px;word-break:break-all;}
+</style>
 </head>
 <body>
+<canvas id="mx"></canvas>
 <div id="cur"></div>
-<div id="cur-ring"></div>
 
-<div class="topbar">
-  <div class="tb-addr"><span class="tb-protocol">HTTPS://</span><span class="tb-url">SM.ANALYTICS.PORTFOLIO / CONNECT</span></div>
-  <div class="tb-status">
-    <span>SUJIT.MURARI</span>
-    <span>DATE: <span id="live-date">—</span></span>
-    <span>TIME: <span id="live-clock">00:00:00</span></span>
-    <span class="live">■ LIVE</span>
-  </div>
-  <div class="tb-controls"><div class="tb-btn">—</div><div class="tb-btn">□</div><div class="tb-btn close">✕</div></div>
+<div class="title-bar">
+  <div class="tb-dots"><div class="tb-dot d-r"></div><div class="tb-dot d-a"></div><div class="tb-dot d-g"></div></div>
+  <div class="tb-path">sm@analytics-sys:~$ <em>netstat --connections</em></div>
+  <div class="tb-meta"><span>MEM: 84%</span><span>CPU: 23%</span><span class="tb-alert">● INTERNSHIP MODE: ON</span></div>
 </div>
-
-<nav>
-  <a class="nav-logo" href="index.html"><span>Sujit Murari</span><span class="jp">スジット・ムラリ</span></a>
-  <ul class="nav-items">
-    <li><a href="skills.html">/ Skills スキル</a></li>
-    <li><a href="projects.html">/ Projects 作品</a></li>
-    <li><a href="about.html">/ About 概要</a></li>
-    <li><a href="connect.html" class="active">/ Connect 接続</a></li>
-    <li><a href="contact.html">/ Contact 連絡</a></li>
+<nav class="menu-bar">
+  <a class="mb-logo" href="index.html">SM<span>://</span>SYS</a>
+  <ul class="mb-nav">
+    <li><a href="skills.html">SKILLS</a></li>
+    <li><a href="projects.html">PROJECTS</a></li>
+    <li><a href="about.html">ABOUT</a></li>
+    <li><a href="connect.html" class="act">CONNECT</a></li>
+    <li><a href="contact.html">CONTACT</a></li>
   </ul>
-  <div class="nav-right"><div class="nav-tag"><span class="dot-live"></span>OPEN TO INTERNSHIPS</div></div>
+  <div class="mb-right">
+    <div class="mb-clock" id="mbclk">00:00:00</div>
+    <div class="mb-online"><span class="pulse"></span>ONLINE</div>
+  </div>
 </nav>
 
-<div class="ruler"><div class="ruler-marks">
-  <span>PLATFORMS</span><span>CONNECT</span><span>接続</span><span>TABLEAU</span>
-  <span>LINKEDIN</span><span>GITHUB</span><span>PUBLIC</span><span>LIVE</span>
-  <span>PROFILE</span><span>WORK</span><span>ANALYTICS</span><span>STUDIO</span>
-</div></div>
+<div class="page">
 
-<div class="page-wrap">
-  <div class="page-hero">
-    <div class="ph-num">// 04</div>
-    <h1 class="ph-title">Connect <span class="ph-jp">接続</span></h1>
-    <p class="ph-sub">PLATFORMS · プラットフォーム · FIND ME ONLINE</p>
+  <div class="pg-hero reveal">
+    <div class="pg-breadcrumb"><a href="index.html">SM://HOME</a><span>/</span>CONNECT</div>
+    <div class="pg-num">// 04</div>
+    <div class="pg-title">NET<span>_CONNECTIONS</span></div>
+    <div class="pg-sub">&gt;_ PLATFORMS · FIND ME ONLINE · ACTIVE NODES</div>
   </div>
 
-  <section class="inner-section">
-    <div class="connect-grid reveal">
+  <div class="sec-head">
+    <span class="sec-label">netstat — 2 ACTIVE CONNECTIONS</span>
+    <span class="sec-badge sbg">2 ONLINE</span>
+  </div>
 
-      <a class="conn-card" href="https://public.tableau.com/app/profile/sujit.murari/vizzes" target="_blank">
+  <div class="conn-wrap">
+    <div class="conn-grid">
+
+      <a class="conn-card reveal" href="https://public.tableau.com/app/profile/sujit.murari/vizzes" target="_blank">
         <div class="conn-top">
-          <div class="conn-icon" style="color:#1f77b4;">TB</div>
-          <span class="conn-arr">↗</span>
+          <div class="conn-icon" style="color:#1f77b4;border-color:rgba(31,119,180,.3);">TB</div>
+          <div class="conn-arr">↗</div>
         </div>
         <div class="conn-platform">// Tableau Public</div>
-        <div class="conn-title">Data Dashboards データ</div>
-        <p class="conn-desc">All 4 published dashboards — Flights, E-Commerce, Gym Performance and Decathlon India. Fully interactive, publicly accessible.</p>
+        <div class="conn-title">Data Dashboards</div>
+        <p class="conn-desc">All 4 published dashboards — Flights, E-Commerce, Gym Performance and Decathlon India. Fully interactive, publicly accessible on Tableau Public. Live view counts and engagement metrics visible.</p>
         <div class="conn-url">public.tableau.com/app/profile/sujit.murari/vizzes</div>
       </a>
 
-      <a class="conn-card" href="https://www.linkedin.com/in/sujitmurari06/" target="_blank">
+      <a class="conn-card reveal" href="https://www.linkedin.com/in/sujitmurari06/" target="_blank">
         <div class="conn-top">
-          <div class="conn-icon" style="color:#0077b5;">Li</div>
-          <span class="conn-arr">↗</span>
+          <div class="conn-icon" style="color:#0077b5;border-color:rgba(0,119,181,.3);">Li</div>
+          <div class="conn-arr">↗</div>
         </div>
         <div class="conn-platform">// LinkedIn</div>
-        <div class="conn-title">Professional Profile プロフィール</div>
-        <p class="conn-desc">Academic background, skill endorsements, project highlights and professional network. Best channel for internship inquiries and collaboration.</p>
+        <div class="conn-title">Professional Profile</div>
+        <p class="conn-desc">Academic background, skill endorsements, project highlights and professional network. Best channel for internship inquiries, collaboration opportunities, and professional outreach.</p>
         <div class="conn-url">linkedin.com/in/sujitmurari06</div>
       </a>
 
     </div>
-  </section>
+  </div>
+
 </div>
 
-<div class="footer-bottom"><div class="fb-l">© 2026 SUJIT MURARI</div><div class="fb-r">← <a href="about.html" style="color:var(--dim);text-decoration:none;">ABOUT</a> &nbsp;|&nbsp; <a href="contact.html" style="color:var(--dim);text-decoration:none;">CONTACT →</a></div></div>
-<script src="script.js"></script>
+<div class="status-bar">
+  <div class="sc act">SM://CONNECT</div>
+  <div class="sc">SUJIT MURARI</div>
+  <div class="sc cy">2 CONNECTIONS ACTIVE</div>
+  <div class="sc al">● OPEN TO INTERNSHIPS</div>
+  <div class="sc ml" id="sbtime">00:00:00</div>
+</div>
+
+<script src="cyber.js"></script>
 </body>
 </html>
