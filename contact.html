@@ -4,154 +4,96 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CONTACT — SM://ANALYTICS.SYS</title>
-
 <link rel="stylesheet" href="cyber.css">
-
 <style>
-
-.contact-wrap{
-display:grid;
-grid-template-columns:1fr 300px;
-gap:28px;
-padding:40px;
-align-items:start;
-}
-
-/* INPUTS */
-
-.ssh-field{display:flex;flex-direction:column;margin-bottom:14px}
-
-.ssh-lbl{
-font-family:var(--term);
-font-size:.85rem;
-color:var(--dim);
-letter-spacing:.1em;
-}
-
-.ssh-in{
-font-family:var(--term);
-font-size:.95rem;
-color:var(--g);
-background:rgba(0,255,65,.025);
-border:none;
-border-bottom:1px solid var(--border);
-padding:7px 10px;
-outline:none;
-width:100%;
-}
-
-textarea.ssh-in{
-border:1px solid var(--border);
-resize:none;
-}
-
-.ssh-btn{
-width:100%;
-font-family:var(--term);
-font-size:1rem;
-letter-spacing:.14em;
-padding:10px;
-margin-top:8px;
-background:var(--g-dim);
-color:var(--g);
-border:1px solid rgba(0,255,65,.38);
-cursor:none;
-}
-
-/* SUCCESS MESSAGE */
-
-.ssh-status{
-margin-top:10px;
-font-family:var(--term);
-font-size:.85rem;
-letter-spacing:.08em;
-opacity:0;
-transform:translateY(6px);
-transition:all .35s ease;
-}
-
-.ssh-status.show{
-opacity:1;
-transform:translateY(0);
-}
-
-.ssh-status.success{
-color:var(--g);
-text-shadow:0 0 8px var(--g-glow);
-}
-
-.ssh-status.error{
-color:#ff4c4c;
-}
-
+.contact-wrap{display:grid;grid-template-columns:1fr 300px;gap:28px;padding:40px;align-items:start;}
+/* form */
+.ssh-head{font-family:var(--term);font-size:.95rem;color:var(--c);margin-bottom:18px;letter-spacing:.07em;line-height:1.6;}
+.ssh-head .bl{opacity:0;}
+.ssh-field{display:flex;flex-direction:column;gap:4px;margin-bottom:14px;}
+.ssh-lbl{font-family:var(--term);font-size:.85rem;color:var(--dim);letter-spacing:.1em;display:flex;align-items:center;gap:5px;}
+.ssh-lbl::before{content:'>';color:var(--muted);}
+.ssh-in{font-family:var(--term);font-size:.95rem;color:var(--g);background:rgba(0,255,65,.025);border:none;border-bottom:1px solid var(--border);padding:7px 10px;outline:none;width:100%;letter-spacing:.06em;transition:border-color .12s,background .12s;}
+.ssh-in:focus{border-color:var(--g);background:var(--g-dim);}
+.ssh-in::placeholder{color:var(--muted);}
+textarea.ssh-in{resize:none;border:1px solid var(--border);margin-top:2px;}
+textarea.ssh-in:focus{border-color:var(--g);}
+.ssh-btn{width:100%;font-family:var(--term);font-size:1rem;letter-spacing:.14em;text-transform:uppercase;padding:10px;margin-top:8px;background:var(--g-dim);color:var(--g);border:1px solid rgba(0,255,65,.38);cursor:none;transition:all .12s;}
+.ssh-btn:hover{background:var(--g);color:var(--bg);box-shadow:0 0 18px var(--g-glow);}
+/* aside */
+.contact-aside{display:flex;flex-direction:column;gap:1px;}
+.aside-block{border:1px solid var(--border);background:var(--panel);padding:16px 14px;}
+.aside-label{font-family:var(--term);font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.aside-label::before{content:'// ';color:var(--muted);}
+.aside-link{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-family:var(--term);font-size:.88rem;color:rgba(0,255,65,.45);text-decoration:none;letter-spacing:.06em;transition:color .12s;cursor:none;}
+.aside-link:hover{color:var(--c);text-shadow:0 0 6px var(--c-glow);}
+.aside-link:last-child{border-bottom:none;}
+.aside-icon{width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-family:var(--term);font-size:.7rem;color:var(--dim);border:1px solid var(--border);}
+.avail{padding:9px 12px;background:var(--g-dim);border:1px solid rgba(0,255,65,.3);font-family:var(--term);font-size:.82rem;color:var(--g);letter-spacing:.1em;text-transform:uppercase;display:flex;align-items:center;gap:8px;}
+.cv-btn{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--panel);border:1px solid var(--border);font-family:var(--term);font-size:.88rem;color:var(--g);text-decoration:none;transition:all .12s;cursor:none;letter-spacing:.08em;}
+.cv-btn:hover{background:var(--g-dim);border-color:var(--border2);}
+@media(max-width:760px){.contact-wrap{grid-template-columns:1fr;padding:20px;}}
 </style>
 </head>
-
 <body>
-
 <canvas id="mx"></canvas>
 <div id="cur"></div>
 
 <div class="title-bar">
-<div class="tb-dots">
-<div class="tb-dot d-r"></div>
-<div class="tb-dot d-a"></div>
-<div class="tb-dot d-g"></div>
-</div>
-
-<div class="tb-path">
-sm@analytics-sys:~$ <em>ssh hire@murari.sujit -p 22</em>
-</div>
+  <div class="tb-dots"><div class="tb-dot d-r"></div><div class="tb-dot d-a"></div><div class="tb-dot d-g"></div></div>
+  <div class="tb-path">sm@analytics-sys:~$ <em>ssh hire@murari.sujit -p 22</em></div>
+  <div class="tb-meta"><span>MEM: 84%</span><span>CPU: 23%</span><span class="tb-alert">● INTERNSHIP MODE: ON</span></div>
 </div>
 
 <nav class="menu-bar">
-<a class="mb-logo" href="index.html">SM<span>://</span>SYS</a>
-
-<ul class="mb-nav">
-<li><a href="skills.html">SKILLS</a></li>
-<li><a href="projects.html">PROJECTS</a></li>
-<li><a href="about.html">ABOUT</a></li>
-<li><a href="connect.html">CONNECT</a></li>
-<li><a href="contact.html" class="act">CONTACT</a></li>
-</ul>
+  <a class="mb-logo" href="index.html">SM<span>://</span>SYS</a>
+  <ul class="mb-nav">
+    <li><a href="skills.html">SKILLS</a></li>
+    <li><a href="projects.html">PROJECTS</a></li>
+    <li><a href="about.html">ABOUT</a></li>
+    <li><a href="connect.html">CONNECT</a></li>
+    <li><a href="contact.html" class="act">CONTACT</a></li>
+  </ul>
 </nav>
 
 <div class="page">
 
-<div class="pg-hero reveal">
-<div class="pg-title">SSH<span>_HANDSHAKE</span></div>
-<div class="pg-sub">PORT 22 OPEN · INTERNSHIP INQUIRIES WELCOME</div>
-</div>
-
 <div class="contact-wrap">
 
-<div>
+<div class="reveal">
 
+<!-- ONLY CHANGE HERE -->
 <form id="cf" action="https://formspree.io/f/xreybnby" method="POST">
 
-<div class="ssh-field">
-<label class="ssh-lbl">NAME</label>
-<input class="ssh-in" type="text" name="name" placeholder="your_name" required>
+<div class="ssh-head">
+Connecting to hire@murari.sujit...<br>
+<span style="color:var(--g);">Connection established. Please authenticate.</span>
 </div>
 
 <div class="ssh-field">
-<label class="ssh-lbl">EMAIL</label>
-<input class="ssh-in" type="email" name="email" placeholder="you@email.com" required>
+<label class="ssh-lbl">IDENTIFY (name)</label>
+<input class="ssh-in" type="text" name="name" placeholder="your_name">
 </div>
 
 <div class="ssh-field">
-<label class="ssh-lbl">SUBJECT</label>
-<input class="ssh-in" type="text" name="subject" placeholder="internship / collaboration">
+<label class="ssh-lbl">RETURN ADDRESS (email)</label>
+<input class="ssh-in" type="email" name="email" placeholder="you@company.com">
 </div>
 
 <div class="ssh-field">
-<label class="ssh-lbl">MESSAGE</label>
-<textarea class="ssh-in" rows="6" name="message" placeholder="Write your message..." required></textarea>
+<label class="ssh-lbl">SUBJECT (purpose)</label>
+<input class="ssh-in" type="text" name="subject" placeholder="internship_inquiry / collaboration / other">
 </div>
 
-<button type="submit" class="ssh-btn">[ TRANSMIT_MESSAGE ]</button>
+<div class="ssh-field">
+<label class="ssh-lbl">PAYLOAD (message)</label>
+<textarea class="ssh-in" rows="6" name="message" placeholder="Describe the opportunity or project..."></textarea>
+</div>
 
-<div id="form-status" class="ssh-status"></div>
+<button type="submit" class="ssh-btn">[TRANSMIT_MESSAGE]</button>
+
+<!-- ADDED LINE -->
+<div id="form-status"></div>
 
 </form>
 
@@ -162,49 +104,6 @@ sm@analytics-sys:~$ <em>ssh hire@murari.sujit -p 22</em>
 </div>
 
 <script src="cyber.js"></script>
-
-<script>
-
-const form = document.getElementById("cf");
-const status = document.getElementById("form-status");
-
-form.addEventListener("submit", async function(e){
-
-e.preventDefault();
-
-const data = new FormData(form);
-
-try{
-
-const response = await fetch(form.action,{
-method:"POST",
-body:data,
-headers:{'Accept':'application/json'}
-});
-
-if(response.ok){
-
-status.innerHTML="✓ MESSAGE TRANSMITTED — CONNECTION SECURE";
-status.className="ssh-status success show";
-form.reset();
-
-}else{
-
-status.innerHTML="✖ TRANSMISSION FAILED";
-status.className="ssh-status error show";
-
-}
-
-}catch(err){
-
-status.innerHTML="✖ NETWORK ERROR";
-status.className="ssh-status error show";
-
-}
-
-});
-
-</script>
 
 </body>
 </html>
