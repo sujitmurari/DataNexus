@@ -661,12 +661,13 @@ textarea.ssh-in:focus{border-color:var(--g);}
     <div class="panel reveal">
       <div class="ph"><div class="pt">SSH HIRE@MURARI</div><div class="pbadge pbr">PORT 22 OPEN</div></div>
       <div class="pb">
-        <form id="cf">
+        <form id="cf" action="https://formspree.io/f/xreybnby" method="POST">
           <div class="ssh-head">Establishing secure connection...</div>
           <div class="ssh-field"><label class="ssh-lbl">IDENTIFY (name)</label><input class="ssh-in" type="text" placeholder="your_name"></div>
           <div class="ssh-field"><label class="ssh-lbl">RETURN ADDR (email)</label><input class="ssh-in" type="email" placeholder="you@company.com"></div>
           <div class="ssh-field"><label class="ssh-lbl">PAYLOAD (message)</label><textarea class="ssh-in" rows="3" placeholder="internship inquiry..."></textarea></div>
           <button type="submit" class="ssh-btn">[TRANSMIT_MESSAGE]</button>
+           <div id="form-status" style="margin-top:10px;font-family:var(--term);font-size:.9rem;"></div>
           <div class="ssh-note">
             Direct: <a href="mailto:sujitmurari06@gmail.com">sujitmurari06@gmail.com</a> ·
             <a href="https://www.linkedin.com/in/sujitmurari06/" target="_blank">LinkedIn ↗</a>
